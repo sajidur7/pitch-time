@@ -1,118 +1,117 @@
 @import "tailwindcss";
 
 :root {
-  /* Wise Palette: Deep Moss & Lime Voltage */
-  --color-forest-ink: #163300;
-  --color-lime-voltage: #9fe870;
-  --color-spruce: #054d28;
-  --color-linen-mist: #e2f6d5;
-  --color-signal-blue: #0b4c72;
-  --color-alarm-red: #cb272f;
-  --color-charcoal: #454745;
-  --color-obsidian: #0e0f0c;
-  --color-pebble: #868685;
-  --color-slate: #6a6c6a;
-  --color-fog: #e8ebe6;
-  --color-paper: #ffffff;
+  /* Shop Palette */
+  --color-canvas-mist: #f2f4f5;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-faint-border: #ebebeb;
+  --color-muted-gray: #787574;
+  --color-cool-stone: #cccccc;
+  --color-warm-fog: #acb0aa;
+  --color-shop-violet: #5433eb;
+  --color-violet-wash: #c0b5f3;
+  --color-slate-ink: #332f2d;
+  --color-ash-veil: #665a54;
 
-  /* Typography Scale */
-  --font-wise: var(--font-inter), system-ui, -apple-system, sans-serif;
+  /* Typography */
+  --font-gt: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 @theme {
-  --color-forest-ink: #163300;
-  --color-lime-voltage: #9fe870;
-  --color-spruce: #054d28;
-  --color-linen-mist: #e2f6d5;
-  --color-charcoal: #454745;
-  --color-obsidian: #0e0f0c;
-  --color-pebble: #868685;
-  --color-slate: #6a6c6a;
-  --color-fog: #e8ebe6;
-  --color-paper: #ffffff;
+  --color-canvas-mist: #f2f4f5;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-faint-border: #ebebeb;
+  --color-muted-gray: #787574;
+  --color-cool-stone: #cccccc;
+  --color-shop-violet: #5433eb;
+  --color-violet-wash: #c0b5f3;
+  --color-slate-ink: #332f2d;
 }
 
 html,
 body {
-  background-color: var(--color-paper);
-  color: var(--color-charcoal);
-  font-family: var(--font-wise);
+  background-color: var(--color-canvas-mist);
+  color: var(--color-ink-black);
+  font-family: var(--font-gt);
+  letter-spacing: -0.025em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Wise blocky display type */
-.font-display-wise {
-  font-family: var(--font-wise);
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 0.92;
-}
-
-/* Wise Pill Components */
-.wise-pill-btn-primary {
-  background-color: var(--color-lime-voltage);
-  color: var(--color-forest-ink);
-  font-weight: 600;
-  border-radius: 9999px;
-  transition: all 0.15s ease-in-out;
-}
-.wise-pill-btn-primary:hover {
-  filter: brightness(0.96);
-  transform: translateY(-1px);
-}
-
-.wise-pill-btn-dark {
-  background-color: var(--color-forest-ink);
-  color: var(--color-paper);
-  font-weight: 500;
-  border-radius: 9999px;
-  transition: all 0.15s ease-in-out;
-}
-.wise-pill-btn-dark:hover {
-  background-color: #1f4702;
-}
-
-.wise-pill-btn-outline {
-  background-color: var(--color-paper);
-  color: var(--color-forest-ink);
-  border: 1px solid var(--color-forest-ink);
-  font-weight: 500;
-  border-radius: 9999px;
-  transition: all 0.15s ease-in-out;
-}
-.wise-pill-btn-outline:hover {
-  background-color: var(--color-fog);
-}
-
-/* Wise Cards */
-.wise-card {
-  background-color: var(--color-fog);
-  border-radius: 10px;
-  transition: all 0.15s ease-in-out;
-}
-
-.wise-card-white {
-  background-color: var(--color-paper);
-  border: 1px solid rgba(134, 134, 133, 0.25);
-  border-radius: 10px;
-}
-
-.wise-card-dark {
-  background-color: var(--color-forest-ink);
-  color: var(--color-paper);
+/* Shop 28px Floating Cards with Dual-Layer Soft Shadows */
+.shop-card-floating {
+  background-color: var(--color-pure-white);
   border-radius: 28px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px -2px, rgba(0, 0, 0, 0.04) 0px 2px 6px -1px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Custom Scrollbar */
+.shop-card-floating:hover {
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 8px 24px -4px, rgba(0, 0, 0, 0.06) 0px 4px 10px -2px;
+  transform: translateY(-2px);
+}
+
+/* Shop Category Chip (9999px pill with subtle elevation) */
+.shop-chip {
+  background-color: var(--color-pure-white);
+  border: 1px solid var(--color-faint-border);
+  border-radius: 9999px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+  transition: all 0.15s ease;
+}
+
+.shop-chip:hover {
+  border-color: #d6d6d6;
+}
+
+.shop-chip-active {
+  background-color: var(--color-shop-violet);
+  color: #ffffff;
+  border-color: var(--color-shop-violet);
+  box-shadow: rgba(69, 36, 219, 0.25) 0px 4px 14px 0px;
+}
+
+/* Shop Violet Submit Button with Tinted Glow */
+.shop-violet-btn {
+  background-color: var(--color-shop-violet);
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: rgba(69, 36, 219, 0.34) 0px 4px 24px 0px;
+  transition: all 0.15s ease-in-out;
+}
+
+.shop-violet-btn:hover {
+  filter: brightness(1.06);
+  transform: scale(1.02);
+}
+
+/* Shop Pill Controls */
+.shop-pill-white {
+  background-color: var(--color-pure-white);
+  border: 1px solid var(--color-faint-border);
+  border-radius: 9999px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 6px 0px;
+  transition: all 0.15s ease;
+}
+
+.shop-pill-white:hover {
+  border-color: #d1d1d1;
+}
+
+/* Custom Scrollbar for Shop style */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-fog);
+  background: var(--color-canvas-mist);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-forest-ink);
+  background: #d6d9dc;
   border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-gray);
 }

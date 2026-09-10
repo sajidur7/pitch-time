@@ -6,21 +6,20 @@ import { UserProvider } from "@/context/UserContext";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Pitch Time — Football Kickoff Tracker & Push Alerts",
+  title: "pitch time • Football Match Tracker & Push Alerts",
   description:
-    "Never miss kickoff. Real football fixtures for Champions League, Premier League, and La Liga auto-converted to your local timezone with instant browser alerts.",
+    "Explore upcoming club football matches across Champions League, Premier League, and La Liga. Converted to your local timezone with instant browser push notifications.",
   keywords: [
-    "Pitch Time",
+    "pitch time",
     "Football Match Tracker",
     "Kickoff Alerts",
     "Champions League",
     "Premier League",
     "La Liga",
-    "Wise Style Football App",
   ],
   manifest: "/manifest.json",
   icons: {
@@ -30,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#163300",
+  themeColor: "#5433eb",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -46,7 +45,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/icon.png" type="image/png" />
       </head>
-      <body className="min-h-full flex flex-col bg-white text-[#454745] selection:bg-[#9fe870] selection:text-[#163300]">
+      <body className="min-h-full flex flex-col bg-[#f2f4f5] text-[#000000] selection:bg-[#5433eb] selection:text-white">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>
