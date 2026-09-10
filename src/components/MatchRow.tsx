@@ -61,11 +61,6 @@ export function MatchRow({ match }: MatchRowProps) {
                 {kickoff.timeStr}
               </div>
             </div>
-            {kickoff.isToday && (
-              <span className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-[#ffb110]/20 text-[#000000]">
-                Today
-              </span>
-            )}
           </div>
 
           {/* Teams Matchup (Typographic Monograms - NO image dependencies) */}

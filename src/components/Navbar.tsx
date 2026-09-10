@@ -32,10 +32,6 @@ export function Navbar({ onOpenSettings }: NavbarProps) {
         {/* Brand Lockup: pitch time. */}
         <div className="flex items-center space-x-3">
           <PitchTimeLogo size="md" />
-          <span className="hidden sm:inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-normal text-black/60 bg-black/5">
-            <span>⚽</span>
-            <span>match notebook</span>
-          </span>
         </div>
 
         {/* Right Navigation Actions (Notion 8px Buttons) */}

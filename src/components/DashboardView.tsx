@@ -71,18 +71,16 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
     <div className="max-w-[1240px] mx-auto px-4 sm:px-8 py-10 sm:py-16 space-y-10">
       {/* Notion Hero: Centered Stack with Highlight Pill */}
       <div className="space-y-6 text-center max-w-2xl mx-auto">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-black/5 text-xs text-black/70">
-          <Sparkles className="w-3.5 h-3.5 text-[#0075de]" />
-          <span>Local time fixtures • {preferences.timezone}</span>
+        <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-normal text-black/70 bg-black/5">
+          <span>⚽</span>
+          <span>match notebook</span>
         </div>
 
-        {/* Headline with Notion Highlight Pill */}
+        {/* Headline */}
         <div className="space-y-3">
           <PitchTimeLogo size="hero" />
           <h1 className="text-3xl sm:text-5xl font-semibold tracking-[-0.035em] text-black leading-tight">
-            Never miss a{' '}
-            <span className="notion-highlight-pill">kickoff</span>{' '}
-            again.
+            Never miss a kickoff again.
           </h1>
         </div>
 
