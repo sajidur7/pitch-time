@@ -5,7 +5,7 @@ import { useUser } from '@/context/UserContext';
 import { TEAMS } from '@/lib/teams-data';
 import { COMMON_TIMEZONES, getCurrentTimeInZone } from '@/lib/timezone';
 import { sendTestNotification, getNotificationPermission, requestNotificationPermission } from '@/lib/push-notifications';
-import { X, Search, Bell, Clock, Trash2, Plus, Check, LogOut, RotateCcw, Send } from 'lucide-react';
+import { X, Search, Bell, Clock, Trash2, Plus, Send, Check } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -14,12 +14,10 @@ interface SettingsModalProps {
 
 export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const {
-    user,
-    logout,
+    preferences,
     updateTimezone,
     toggleFavoriteTeam,
     updateNotificationPreferences,
-    resetOnboarding,
   } = useUser();
 
   const [activeTab, setActiveTab] = useState<'teams' | 'timezone' | 'notifications'>('teams');
@@ -27,10 +25,10 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [teamSearch, setTeamSearch] = useState('');
   const [testStatus, setTestStatus] = useState<string | null>(null);
 
-  if (!isOpen || !user) return null;
+  if (!isOpen) return null;
 
-  const currentTeams = TEAMS.filter((t) => (user.favoriteTeamIds || []).includes(t.id));
-  const availableTeams = TEAMS.filter((t) => !(user.favoriteTeamIds || []).includes(t.id));
+  const currentTeams = TEAMS.filter((t) => (preferences.favoriteTeamIds || []).includes(t.id));
+  const availableTeams = TEAMS.filter((t) => !(preferences.favoriteTeamIds || []).includes(t.id));
 
   const filteredAvailableTeams = availableTeams.filter(
     (t) =>
@@ -46,108 +44,108 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   );
 
   const handleSendTestPush = async () => {
-    setTestStatus('Dispatching test notification...');
+    setTestStatus('Sending test alert...');
     const res = await sendTestNotification(
-      'Pitch Time Test Alert',
-      `Kickoff approaching! Converted to ${user.timezone}. 10-minute alert active.`
+      'Pitch Time Kickoff Alert',
+      `Match starts in 10 minutes! Local time: ${preferences.timezone}`
     );
     setTestStatus(res.message);
     setTimeout(() => setTestStatus(null), 5000);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
       <div
-        className="bg-white w-full max-w-2xl max-h-[90vh] hairline-all flex flex-col shadow-2xl overflow-hidden"
+        className="bg-white w-full max-w-xl max-h-[90vh] rounded-[24px] flex flex-col shadow-2xl overflow-hidden border border-black/10"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header */}
-        <div className="p-4 sm:p-6 hairline-b flex items-center justify-between">
-          <div className="flex items-center space-x-2 font-mono text-xs text-neutral-500 uppercase">
-            <span className="status-dot" />
-            <span className="text-black font-medium">PREFERENCES & CONFIGURATION</span>
+        {/* Wise Modal Header */}
+        <div className="p-6 bg-[#e8ebe6] flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[#163300]">
+              Configuration
+            </span>
+            <h2 className="text-2xl font-black text-[#0e0f0c] tracking-tight">
+              Preferences
+            </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-neutral-100 transition-colors text-black"
-            title="Close Settings"
+            className="w-9 h-9 rounded-full bg-white hover:bg-neutral-200 flex items-center justify-center text-[#163300] transition-colors"
+            title="Close"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex hairline-b bg-neutral-50 text-xs font-mono uppercase">
-          <button
-            onClick={() => setActiveTab('teams')}
-            className={`flex-1 py-3 text-center transition-colors ${
-              activeTab === 'teams'
-                ? 'bg-white text-black font-semibold hairline-b border-b-2 border-black'
-                : 'text-neutral-500 hover:text-black'
-            }`}
-          >
-            Favorite Clubs ({user.favoriteTeamIds?.length || 0}/5)
-          </button>
-          <button
-            onClick={() => setActiveTab('timezone')}
-            className={`flex-1 py-3 text-center transition-colors ${
-              activeTab === 'timezone'
-                ? 'bg-white text-black font-semibold hairline-b border-b-2 border-black'
-                : 'text-neutral-500 hover:text-black'
-            }`}
-          >
-            Timezone
-          </button>
-          <button
-            onClick={() => setActiveTab('notifications')}
-            className={`flex-1 py-3 text-center transition-colors ${
-              activeTab === 'notifications'
-                ? 'bg-white text-black font-semibold hairline-b border-b-2 border-black'
-                : 'text-neutral-500 hover:text-black'
-            }`}
-          >
-            Notifications
-          </button>
+        {/* Wise Segmented Tab Switcher */}
+        <div className="p-4 bg-[#e8ebe6] border-t border-black/5">
+          <div className="inline-flex w-full bg-white p-1 rounded-full space-x-1">
+            <button
+              onClick={() => setActiveTab('teams')}
+              className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'teams'
+                  ? 'bg-[#9fe870] text-[#163300]'
+                  : 'text-[#454745] hover:text-[#163300]'
+              }`}
+            >
+              Clubs ({preferences.favoriteTeamIds?.length || 0}/5)
+            </button>
+            <button
+              onClick={() => setActiveTab('timezone')}
+              className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'timezone'
+                  ? 'bg-[#9fe870] text-[#163300]'
+                  : 'text-[#454745] hover:text-[#163300]'
+              }`}
+            >
+              Timezone
+            </button>
+            <button
+              onClick={() => setActiveTab('notifications')}
+              className={`flex-1 py-2 rounded-full text-xs font-bold transition-all ${
+                activeTab === 'notifications'
+                  ? 'bg-[#9fe870] text-[#163300]'
+                  : 'text-[#454745] hover:text-[#163300]'
+              }`}
+            >
+              Alerts
+            </button>
+          </div>
         </div>
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
-          {/* TAB 1: FAVORITE TEAMS */}
+        {/* Modal Body */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* TAB 1: FAVORITE CLUBS (NO images - pure typography) */}
           {activeTab === 'teams' && (
             <div className="space-y-6">
               <div>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs uppercase font-mono text-neutral-600">
-                    Currently Tracked Clubs
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-[#6a6c6a]">
+                    Your Tracked Clubs
                   </h3>
-                  <span className="text-xs font-mono text-neutral-500">
-                    {user.favoriteTeamIds?.length || 0} / 5 Max
+                  <span className="text-xs font-bold text-[#163300]">
+                    {preferences.favoriteTeamIds?.length || 0} of 5 selected
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {currentTeams.map((team) => (
                     <div
                       key={team.id}
-                      className="p-3 bg-white hairline-all flex items-center justify-between"
+                      className="p-3 bg-[#e8ebe6] rounded-[10px] flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-2.5 min-w-0">
-                        <div className="w-6 h-6 rounded-full overflow-hidden shrink-0 border border-black/10">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={team.crest}
-                            alt={team.name}
-                            className="w-full h-full object-contain"
-                            onError={(e) => {
-                              (e.target as HTMLElement).style.display = 'none';
-                            }}
-                          />
-                        </div>
-                        <span className="text-sm font-medium truncate">{team.name}</span>
+                        <span className="px-2 py-0.5 rounded-full bg-[#163300] text-[#9fe870] text-xs font-black shrink-0">
+                          {team.code}
+                        </span>
+                        <span className="text-sm font-bold text-[#0e0f0c] truncate">
+                          {team.name}
+                        </span>
                       </div>
                       <button
                         onClick={() => toggleFavoriteTeam(team.id)}
-                        className="text-neutral-400 hover:text-red-600 p-1"
+                        className="text-[#868685] hover:text-red-600 p-1.5 rounded-full hover:bg-white"
                         title="Remove club"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -158,36 +156,36 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               </div>
 
               {/* Add more clubs */}
-              {(user.favoriteTeamIds?.length || 0) < 5 ? (
-                <div className="space-y-3 pt-4 hairline-t">
-                  <label className="block text-xs uppercase font-mono text-neutral-600">
-                    Add Club to Ledger
+              {(preferences.favoriteTeamIds?.length || 0) < 5 ? (
+                <div className="space-y-3 pt-4 border-t border-[#e8ebe6]">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-[#6a6c6a]">
+                    Add Club to Tracker
                   </label>
                   <div className="relative">
-                    <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-neutral-400" />
+                    <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#868685]" />
                     <input
                       type="text"
                       value={teamSearch}
                       onChange={(e) => setTeamSearch(e.target.value)}
-                      placeholder="Search to add (e.g. Liverpool, Barcelona, PSG)..."
-                      className="w-full pl-8 pr-3 py-2 bg-white hairline-all text-xs font-mono focus:outline-none focus:ring-1 focus:ring-black"
+                      placeholder="Search to add (e.g. Arsenal, Liverpool, Real Madrid)..."
+                      className="w-full pl-9 pr-4 py-2 bg-white border border-[#868685]/30 rounded-[10px] text-xs font-medium focus:outline-none focus:border-[#163300]"
                     />
                   </div>
 
-                  <div className="max-h-48 overflow-y-auto hairline-all divide-y divide-black/10 bg-white">
+                  <div className="max-h-44 overflow-y-auto border border-[#868685]/20 rounded-[10px] divide-y divide-black/5 bg-white">
                     {filteredAvailableTeams.map((team) => (
                       <div
                         key={team.id}
-                        className="px-3 py-2 text-xs font-mono flex items-center justify-between hover:bg-neutral-50"
+                        className="px-3.5 py-2.5 text-xs flex items-center justify-between hover:bg-[#e8ebe6]"
                       >
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-black">{team.code}</span>
-                          <span>{team.name}</span>
-                          <span className="text-[10px] text-neutral-400">({team.leagueName})</span>
+                          <span className="font-black text-[#163300]">{team.code}</span>
+                          <span className="font-bold text-[#0e0f0c]">{team.name}</span>
+                          <span className="text-[10px] text-[#868685]">({team.leagueName})</span>
                         </div>
                         <button
                           onClick={() => toggleFavoriteTeam(team.id)}
-                          className="px-2 py-1 bg-black text-white text-[10px] uppercase hover:bg-neutral-800"
+                          className="px-3 py-1 bg-[#163300] text-[#9fe870] rounded-full text-[11px] font-bold hover:bg-[#054d28]"
                         >
                           Add +
                         </button>
@@ -196,8 +194,8 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   </div>
                 </div>
               ) : (
-                <div className="p-3 bg-neutral-50 hairline-all text-xs font-mono text-neutral-600 text-center">
-                  Maximum of 5 clubs selected. Remove one above to add a different club.
+                <div className="p-3 bg-[#e8ebe6] rounded-[10px] text-xs font-semibold text-[#163300] text-center">
+                  Maximum of 5 clubs tracked. Remove a club above to add another.
                 </div>
               )}
             </div>
@@ -206,47 +204,49 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 2: TIMEZONE */}
           {activeTab === 'timezone' && (
             <div className="space-y-4">
-              <div className="p-4 bg-neutral-50 hairline-all space-y-1">
-                <span className="text-[11px] font-mono uppercase text-neutral-500">
-                  Active Timezone
+              <div className="p-4 bg-[#e2f6d5] rounded-[10px] space-y-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#163300]">
+                  Active Selected Zone
                 </span>
-                <div className="text-lg font-mono text-black font-semibold">
-                  {user.timezone}
+                <div className="text-xl font-black text-[#163300]">
+                  {preferences.timezone}
                 </div>
-                <div className="text-xs font-mono text-neutral-600">
-                  Current Time: {getCurrentTimeInZone(user.timezone)}
+                <div className="text-xs text-[#163300] font-medium">
+                  Current Time: {getCurrentTimeInZone(preferences.timezone)}
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs uppercase font-mono text-neutral-600">
-                  Select New Timezone
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#6a6c6a]">
+                  Change Timezone
                 </label>
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-neutral-400" />
+                  <Search className="w-4 h-4 absolute left-3.5 top-3 text-[#868685]" />
                   <input
                     type="text"
                     value={tzSearch}
                     onChange={(e) => setTzSearch(e.target.value)}
-                    placeholder="Search timezones..."
-                    className="w-full pl-8 pr-3 py-2 bg-white hairline-all text-xs font-mono focus:outline-none"
+                    placeholder="Search timezones (e.g. London, Madrid, New York, Tokyo)..."
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-[#868685]/30 rounded-[10px] text-xs font-medium focus:outline-none focus:border-[#163300]"
                   />
                 </div>
 
-                <div className="max-h-56 overflow-y-auto hairline-all divide-y divide-black/10 bg-white">
+                <div className="max-h-56 overflow-y-auto border border-[#868685]/20 rounded-[10px] divide-y divide-black/5 bg-white">
                   {filteredTimezones.map((tz) => {
-                    const isSelected = user.timezone === tz.value;
+                    const isSelected = preferences.timezone === tz.value;
                     return (
                       <button
                         key={tz.value}
                         type="button"
                         onClick={() => updateTimezone(tz.value)}
-                        className={`w-full px-4 py-2.5 text-left font-mono text-xs flex items-center justify-between ${
-                          isSelected ? 'bg-black text-white' : 'hover:bg-neutral-50 text-black'
+                        className={`w-full px-4 py-2.5 text-left text-xs flex items-center justify-between transition-colors ${
+                          isSelected ? 'bg-[#163300] text-white font-bold' : 'hover:bg-[#e8ebe6] text-[#0e0f0c]'
                         }`}
                       >
                         <span>{tz.label}</span>
-                        <span className="text-[10px] text-neutral-400">{tz.offset}</span>
+                        <span className={`text-[11px] ${isSelected ? 'text-[#9fe870]' : 'text-[#868685]'}`}>
+                          {tz.offset}
+                        </span>
                       </button>
                     );
                   })}
@@ -258,39 +258,38 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 3: NOTIFICATIONS */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              {/* Permission & Test push */}
-              <div className="p-4 bg-neutral-50 hairline-all space-y-3">
+              <div className="p-4 bg-[#e8ebe6] rounded-[10px] space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <span className="text-xs font-mono uppercase text-neutral-500 block">
-                      Push Service Status
+                  <div>
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#6a6c6a] block">
+                      Push Service
                     </span>
-                    <span className="text-sm font-medium text-black">
-                      Permission: {getNotificationPermission()}
+                    <span className="text-sm font-bold text-[#0e0f0c]">
+                      Status: {getNotificationPermission()}
                     </span>
                   </div>
                   <button
                     onClick={async () => {
                       await requestNotificationPermission();
                     }}
-                    className="px-3 py-1.5 bg-white hairline-all text-xs font-mono uppercase hover:bg-neutral-100"
+                    className="px-3.5 py-1.5 bg-white text-[#163300] rounded-full text-xs font-bold hover:bg-neutral-100"
                   >
                     Request Permission
                   </button>
                 </div>
 
-                <div className="pt-3 hairline-t">
+                <div className="pt-2 border-t border-black/5">
                   <button
                     id="test-notification-btn"
                     onClick={handleSendTestPush}
-                    className="w-full py-2.5 bg-black text-white text-xs font-mono uppercase tracking-wider hover:bg-neutral-800 transition-colors flex items-center justify-center space-x-2"
+                    className="w-full wise-pill-btn-primary py-2.5 text-xs font-bold flex items-center justify-center space-x-2"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>Send Instant Test Notification</span>
                   </button>
 
                   {testStatus && (
-                    <div className="mt-2 p-2 bg-white hairline-all text-xs font-mono text-black text-center animate-in fade-in">
+                    <div className="mt-2 p-2 bg-white rounded-[8px] text-xs font-semibold text-[#163300] text-center">
                       {testStatus}
                     </div>
                   )}
@@ -299,36 +298,40 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
               {/* Toggles */}
               <div className="space-y-3">
-                <label className="flex items-center space-x-3 p-3.5 hairline-all cursor-pointer hover:bg-neutral-50">
+                <label className="flex items-center space-x-3 p-3.5 bg-[#e8ebe6] rounded-[10px] cursor-pointer hover:bg-[#e2f6d5] transition-colors">
                   <input
                     type="checkbox"
-                    checked={user.notification10Min}
+                    checked={preferences.notification10Min}
                     onChange={(e) =>
                       updateNotificationPreferences({ notification10Min: e.target.checked })
                     }
-                    className="w-4 h-4 accent-black"
+                    className="w-4 h-4 accent-[#163300]"
                   />
                   <div>
-                    <span className="text-sm font-medium block">10-Minute Kickoff Reminder</span>
-                    <span className="text-xs text-neutral-500 font-mono block">
-                      Sends alert 10 minutes prior to kickoff
+                    <span className="text-sm font-bold text-[#0e0f0c] block">
+                      10-Minute Kickoff Alert
+                    </span>
+                    <span className="text-xs text-[#6a6c6a] block">
+                      Receive a notification 10 minutes prior to kickoff
                     </span>
                   </div>
                 </label>
 
-                <label className="flex items-center space-x-3 p-3.5 hairline-all cursor-pointer hover:bg-neutral-50">
+                <label className="flex items-center space-x-3 p-3.5 bg-[#e8ebe6] rounded-[10px] cursor-pointer hover:bg-[#e2f6d5] transition-colors">
                   <input
                     type="checkbox"
-                    checked={user.notificationKickoff}
+                    checked={preferences.notificationKickoff}
                     onChange={(e) =>
                       updateNotificationPreferences({ notificationKickoff: e.target.checked })
                     }
-                    className="w-4 h-4 accent-black"
+                    className="w-4 h-4 accent-[#163300]"
                   />
                   <div>
-                    <span className="text-sm font-medium block">Exact Kickoff Alert</span>
-                    <span className="text-xs text-neutral-500 font-mono block">
-                      Sends alert when match is officially underway
+                    <span className="text-sm font-bold text-[#0e0f0c] block">
+                      Match Kickoff Alert
+                    </span>
+                    <span className="text-xs text-[#6a6c6a] block">
+                      Receive an instant alert at exact kickoff whistle
                     </span>
                   </div>
                 </label>
@@ -337,28 +340,13 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           )}
         </div>
 
-        {/* Footer Actions */}
-        <div className="p-4 bg-neutral-50 hairline-t flex items-center justify-between">
+        {/* Modal Footer */}
+        <div className="p-4 bg-[#e8ebe6] border-t border-black/5 flex justify-end">
           <button
-            onClick={() => {
-              resetOnboarding();
-              onClose();
-            }}
-            className="flex items-center space-x-1.5 text-xs font-mono text-neutral-600 hover:text-black"
+            onClick={onClose}
+            className="wise-pill-btn-dark px-6 py-2.5 text-xs font-bold"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Re-run Onboarding</span>
-          </button>
-
-          <button
-            onClick={() => {
-              logout();
-              onClose();
-            }}
-            className="flex items-center space-x-1.5 px-3 py-1.5 bg-red-50 text-red-700 hover:bg-red-100 text-xs font-mono uppercase tracking-wider"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Log Out</span>
+            Done
           </button>
         </div>
       </div>

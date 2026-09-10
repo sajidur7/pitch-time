@@ -6,23 +6,21 @@ import { UserProvider } from "@/context/UserContext";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata: Metadata = {
-  title: "Pitch Time — Club Football Match Tracker & Kickoff Notifications",
+  title: "Pitch Time — Football Kickoff Tracker & Push Alerts",
   description:
-    "Never miss kickoff. Matches auto-converted to your local time with instant 10-minute browser alerts. Covering UEFA Champions League, Premier League, and La Liga.",
+    "Never miss kickoff. Real football fixtures for Champions League, Premier League, and La Liga auto-converted to your local timezone with instant browser alerts.",
   keywords: [
-    "Football",
-    "Soccer",
-    "Match Tracker",
-    "Kickoff Time",
+    "Pitch Time",
+    "Football Match Tracker",
+    "Kickoff Alerts",
     "Champions League",
     "Premier League",
     "La Liga",
-    "Timezone Football",
-    "Kickoff Alerts",
+    "Wise Style Football App",
   ],
   manifest: "/manifest.json",
   icons: {
@@ -32,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#000000",
+  themeColor: "#163300",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -48,7 +46,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/icon.png" type="image/png" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#ffffff] text-[#000000] selection:bg-black selection:text-white">
+      <body className="min-h-full flex flex-col bg-white text-[#454745] selection:bg-[#9fe870] selection:text-[#163300]">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>

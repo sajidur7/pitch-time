@@ -12,10 +12,8 @@ export interface Team {
   stadium: string;
   city: string;
   country: string;
-  crest: string; // SVG icon or URL
-  monogram: string;
+  monogram?: string;
   primaryColor?: string;
-  secondaryColor?: string;
 }
 
 export type MatchStatus = 'SCHEDULED' | 'TIMED' | 'IN_PLAY' | 'FINISHED';
@@ -27,7 +25,7 @@ export interface Match {
   matchday: string;
   homeTeam: Team;
   awayTeam: Team;
-  utcKickoff: string; // ISO 8601 string in UTC (e.g. 2026-09-11T19:45:00Z)
+  utcKickoff: string; // ISO 8601 string in UTC
   venue: string;
   status: MatchStatus;
   minute?: number;
@@ -36,17 +34,11 @@ export interface Match {
 }
 
 export interface UserPreferences {
-  id: string;
-  email: string;
-  name: string;
-  avatar: string;
-  onboarding_completed: boolean;
   timezone: string;
   favoriteTeamIds: string[];
   notification10Min: boolean;
   notificationKickoff: boolean;
   matchAlerts: Record<string, boolean>; // matchId -> alertEnabled
-  pushSubscription?: any;
 }
 
 export interface TimezoneOption {

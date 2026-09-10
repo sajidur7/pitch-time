@@ -1,115 +1,118 @@
 @import "tailwindcss";
 
 :root {
-  /* 19–86 Palette: Ink & Paper */
-  --color-ink: #000000;
+  /* Wise Palette: Deep Moss & Lime Voltage */
+  --color-forest-ink: #163300;
+  --color-lime-voltage: #9fe870;
+  --color-spruce: #054d28;
+  --color-linen-mist: #e2f6d5;
+  --color-signal-blue: #0b4c72;
+  --color-alarm-red: #cb272f;
+  --color-charcoal: #454745;
+  --color-obsidian: #0e0f0c;
+  --color-pebble: #868685;
+  --color-slate: #6a6c6a;
+  --color-fog: #e8ebe6;
   --color-paper: #ffffff;
 
   /* Typography Scale */
-  --text-body: 16px;
-  --text-body-large: 20px;
-  --leading-body: 1.25;
-  --tracking-tight: -0.025em;
-  --tracking-tighter: -0.04em;
-
-  /* Monumental Watermark scale */
-  --text-display: clamp(72px, 16vw, 360px);
-
-  /* Spacing Scale */
-  --spacing-unit: 6px;
-  --spacing-5: 5px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-24: 24px;
-  --spacing-30: 30px;
-
-  /* Named Radii */
-  --radius-dots: 9999px;
-  --radius-flat: 0px;
+  --font-wise: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 @theme {
-  --color-ink: #000000;
+  --color-forest-ink: #163300;
+  --color-lime-voltage: #9fe870;
+  --color-spruce: #054d28;
+  --color-linen-mist: #e2f6d5;
+  --color-charcoal: #454745;
+  --color-obsidian: #0e0f0c;
+  --color-pebble: #868685;
+  --color-slate: #6a6c6a;
+  --color-fog: #e8ebe6;
   --color-paper: #ffffff;
-  --font-ledger: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 html,
 body {
   background-color: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-ledger, system-ui, sans-serif);
-  font-weight: 300;
-  letter-spacing: -0.02em;
+  color: var(--color-charcoal);
+  font-family: var(--font-wise);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "kern" 1;
 }
 
-/* 19-86 Hairline Rules */
-.hairline-b {
-  border-bottom: 1px solid var(--color-ink);
-}
-
-.hairline-t {
-  border-top: 1px solid var(--color-ink);
-}
-
-.hairline-r {
-  border-right: 1px solid var(--color-ink);
-}
-
-.hairline-l {
-  border-left: 1px solid var(--color-ink);
-}
-
-.hairline-all {
-  border: 1px solid var(--color-ink);
-}
-
-/* 19-86 Monumental Watermark */
-.watermark-ledger {
-  user-select: none;
-  pointer-events: none;
-  font-size: var(--text-display);
-  line-height: 0.9;
+/* Wise blocky display type */
+.font-display-wise {
+  font-family: var(--font-wise);
+  font-weight: 900;
   letter-spacing: -0.04em;
-  font-weight: 200;
-  color: rgba(0, 0, 0, 0.045);
+  line-height: 0.92;
 }
 
-/* 6px Status Dot */
-.status-dot {
+/* Wise Pill Components */
+.wise-pill-btn-primary {
+  background-color: var(--color-lime-voltage);
+  color: var(--color-forest-ink);
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.15s ease-in-out;
+}
+.wise-pill-btn-primary:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+.wise-pill-btn-dark {
+  background-color: var(--color-forest-ink);
+  color: var(--color-paper);
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.15s ease-in-out;
+}
+.wise-pill-btn-dark:hover {
+  background-color: #1f4702;
+}
+
+.wise-pill-btn-outline {
+  background-color: var(--color-paper);
+  color: var(--color-forest-ink);
+  border: 1px solid var(--color-forest-ink);
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.15s ease-in-out;
+}
+.wise-pill-btn-outline:hover {
+  background-color: var(--color-fog);
+}
+
+/* Wise Cards */
+.wise-card {
+  background-color: var(--color-fog);
+  border-radius: 10px;
+  transition: all 0.15s ease-in-out;
+}
+
+.wise-card-white {
+  background-color: var(--color-paper);
+  border: 1px solid rgba(134, 134, 133, 0.25);
+  border-radius: 10px;
+}
+
+.wise-card-dark {
+  background-color: var(--color-forest-ink);
+  color: var(--color-paper);
+  border-radius: 28px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
   width: 6px;
   height: 6px;
-  background-color: var(--color-ink);
-  border-radius: 9999px;
-  display: inline-block;
 }
-
-.status-dot-pulse {
-  animation: dotPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes dotPulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.25;
-  }
-}
-
-/* Custom Scrollbar for sleek ledger feel */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: var(--color-fog);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #000000;
+  background: var(--color-forest-ink);
+  border-radius: 9999px;
 }

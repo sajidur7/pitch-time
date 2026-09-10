@@ -6,16 +6,8 @@ import { getDetectedTimezone } from '@/lib/timezone';
 import { registerServiceWorker } from '@/lib/push-notifications';
 
 interface UserContextType {
-  user: UserPreferences | null;
+  preferences: UserPreferences;
   isLoading: boolean;
-  loginWithGoogle: (customEmail?: string, customName?: string) => void;
-  logout: () => void;
-  completeOnboarding: (data: {
-    timezone: string;
-    favoriteTeamIds: string[];
-    notification10Min: boolean;
-    notificationKickoff: boolean;
-  }) => void;
   updateTimezone: (timezone: string) => void;
   toggleFavoriteTeam: (teamId: string) => boolean; // returns false if max reached
   updateNotificationPreferences: (prefs: {
@@ -23,24 +15,41 @@ interface UserContextType {
     notificationKickoff?: boolean;
   }) => void;
   toggleMatchAlert: (matchId: string) => boolean;
-  resetOnboarding: () => void;
 }
 
-const STORAGE_KEY = 'pitch_time_preferences_v2';
+const STORAGE_KEY = 'pitch_time_wise_preferences_v1';
+
+const defaultPreferences: UserPreferences = {
+  timezone: 'Europe/London',
+  favoriteTeamIds: ['arsenal', 'real-madrid', 'bayern-munich', 'man-city'],
+  notification10Min: true,
+  notificationKickoff: true,
+  matchAlerts: { 'm-1': true },
+};
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<UserPreferences | null>(null);
+  const [preferences, setPreferences] = useState<UserPreferences>(defaultPreferences);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize from localStorage
+  // Initialize from localStorage or auto-detect timezone
   useEffect(() => {
     try {
+      const detected = getDetectedTimezone();
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved);
-        setUser(parsed);
+        setPreferences({
+          ...defaultPreferences,
+          ...parsed,
+          timezone: parsed.timezone || detected,
+        });
+      } else {
+        setPreferences({
+          ...defaultPreferences,
+          timezone: detected,
+        });
       }
     } catch (e) {
       console.warn('Failed to load user state from localStorage:', e);
@@ -48,84 +57,27 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
 
-    // Register service worker quietly in background
+    // Register service worker quietly
     registerServiceWorker().catch(() => {});
   }, []);
 
-  // Save to localStorage when user changes
+  // Save to localStorage when preferences change
   useEffect(() => {
     if (isLoading) return;
     try {
-      if (user) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-      } else {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences));
     } catch (e) {
-      console.warn('Failed to persist user state:', e);
+      console.warn('Failed to persist preferences:', e);
     }
-  }, [user, isLoading]);
-
-  const loginWithGoogle = useCallback((customEmail?: string, customName?: string) => {
-    const defaultTz = getDetectedTimezone();
-    const newUser: UserPreferences = {
-      id: 'usr_' + Math.random().toString(36).substring(2, 9),
-      email: customEmail || 'alex.football@gmail.com',
-      name: customName || 'Alex Mercer',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-      onboarding_completed: false,
-      timezone: defaultTz,
-      favoriteTeamIds: ['arsenal', 'real-madrid'], // Defaults for initial pick
-      notification10Min: true,
-      notificationKickoff: true,
-      matchAlerts: { 'm-1': true },
-    };
-
-    setUser((prev) => {
-      if (prev && prev.onboarding_completed) {
-        return prev;
-      }
-      return newUser;
-    });
-  }, []);
-
-  const logout = useCallback(() => {
-    setUser(null);
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {}
-  }, []);
-
-  const completeOnboarding = useCallback(
-    (data: {
-      timezone: string;
-      favoriteTeamIds: string[];
-      notification10Min: boolean;
-      notificationKickoff: boolean;
-    }) => {
-      setUser((prev) => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          ...data,
-          onboarding_completed: true,
-        };
-      });
-    },
-    []
-  );
+  }, [preferences, isLoading]);
 
   const updateTimezone = useCallback((timezone: string) => {
-    setUser((prev) => {
-      if (!prev) return null;
-      return { ...prev, timezone };
-    });
+    setPreferences((prev) => ({ ...prev, timezone }));
   }, []);
 
   const toggleFavoriteTeam = useCallback((teamId: string): boolean => {
     let success = true;
-    setUser((prev) => {
-      if (!prev) return null;
+    setPreferences((prev) => {
       const current = prev.favoriteTeamIds || [];
       if (current.includes(teamId)) {
         return {
@@ -148,24 +100,20 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
   const updateNotificationPreferences = useCallback(
     (prefs: { notification10Min?: boolean; notificationKickoff?: boolean }) => {
-      setUser((prev) => {
-        if (!prev) return null;
-        return {
-          ...prev,
-          notification10Min:
-            prefs.notification10Min !== undefined ? prefs.notification10Min : prev.notification10Min,
-          notificationKickoff:
-            prefs.notificationKickoff !== undefined ? prefs.notificationKickoff : prev.notificationKickoff,
-        };
-      });
+      setPreferences((prev) => ({
+        ...prev,
+        notification10Min:
+          prefs.notification10Min !== undefined ? prefs.notification10Min : prev.notification10Min,
+        notificationKickoff:
+          prefs.notificationKickoff !== undefined ? prefs.notificationKickoff : prev.notificationKickoff,
+      }));
     },
     []
   );
 
   const toggleMatchAlert = useCallback((matchId: string): boolean => {
     let newState = true;
-    setUser((prev) => {
-      if (!prev) return null;
+    setPreferences((prev) => {
       const currentAlerts = { ...(prev.matchAlerts || {}) };
       newState = !currentAlerts[matchId];
       currentAlerts[matchId] = newState;
@@ -177,29 +125,15 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     return newState;
   }, []);
 
-  const resetOnboarding = useCallback(() => {
-    setUser((prev) => {
-      if (!prev) return null;
-      return {
-        ...prev,
-        onboarding_completed: false,
-      };
-    });
-  }, []);
-
   return (
     <UserContext.Provider
       value={{
-        user,
+        preferences,
         isLoading,
-        loginWithGoogle,
-        logout,
-        completeOnboarding,
         updateTimezone,
         toggleFavoriteTeam,
         updateNotificationPreferences,
         toggleMatchAlert,
-        resetOnboarding,
       }}
     >
       {children}

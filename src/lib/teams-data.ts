@@ -13,9 +13,6 @@ export const TEAMS: Team[] = [
     city: 'London',
     country: 'England',
     monogram: 'AFC',
-    primaryColor: '#EF0107',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/42.png',
   },
   {
     id: 'man-city',
@@ -28,9 +25,6 @@ export const TEAMS: Team[] = [
     city: 'Manchester',
     country: 'England',
     monogram: 'MCFC',
-    primaryColor: '#6CABDD',
-    secondaryColor: '#1C2C5B',
-    crest: 'https://media.api-sports.io/football/teams/50.png',
   },
   {
     id: 'liverpool',
@@ -43,9 +37,6 @@ export const TEAMS: Team[] = [
     city: 'Liverpool',
     country: 'England',
     monogram: 'LFC',
-    primaryColor: '#C8102E',
-    secondaryColor: '#00B2A9',
-    crest: 'https://media.api-sports.io/football/teams/40.png',
   },
   {
     id: 'chelsea',
@@ -58,9 +49,6 @@ export const TEAMS: Team[] = [
     city: 'London',
     country: 'England',
     monogram: 'CFC',
-    primaryColor: '#034694',
-    secondaryColor: '#EE242C',
-    crest: 'https://media.api-sports.io/football/teams/49.png',
   },
   {
     id: 'tottenham',
@@ -73,9 +61,6 @@ export const TEAMS: Team[] = [
     city: 'London',
     country: 'England',
     monogram: 'THFC',
-    primaryColor: '#132257',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/47.png',
   },
   {
     id: 'man-united',
@@ -88,9 +73,6 @@ export const TEAMS: Team[] = [
     city: 'Manchester',
     country: 'England',
     monogram: 'MUFC',
-    primaryColor: '#DA291C',
-    secondaryColor: '#FBE122',
-    crest: 'https://media.api-sports.io/football/teams/33.png',
   },
   {
     id: 'aston-villa',
@@ -103,9 +85,6 @@ export const TEAMS: Team[] = [
     city: 'Birmingham',
     country: 'England',
     monogram: 'AVFC',
-    primaryColor: '#670E36',
-    secondaryColor: '#95BFE5',
-    crest: 'https://media.api-sports.io/football/teams/66.png',
   },
   {
     id: 'newcastle',
@@ -118,9 +97,30 @@ export const TEAMS: Team[] = [
     city: 'Newcastle',
     country: 'England',
     monogram: 'NUFC',
-    primaryColor: '#241F20',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/34.png',
+  },
+  {
+    id: 'brighton',
+    name: 'Brighton & Hove Albion',
+    shortName: 'Brighton',
+    code: 'BHA',
+    leagueId: 'premier-league',
+    leagueName: 'Premier League',
+    stadium: 'Amex Stadium',
+    city: 'Brighton',
+    country: 'England',
+    monogram: 'BHAFC',
+  },
+  {
+    id: 'west-ham',
+    name: 'West Ham United',
+    shortName: 'West Ham',
+    code: 'WHU',
+    leagueId: 'premier-league',
+    leagueName: 'Premier League',
+    stadium: 'London Stadium',
+    city: 'London',
+    country: 'England',
+    monogram: 'WHUFC',
   },
 
   // --- LA LIGA ---
@@ -135,9 +135,6 @@ export const TEAMS: Team[] = [
     city: 'Madrid',
     country: 'Spain',
     monogram: 'RM',
-    primaryColor: '#FFFFFF',
-    secondaryColor: '#FEBE10',
-    crest: 'https://media.api-sports.io/football/teams/541.png',
   },
   {
     id: 'barcelona',
@@ -150,9 +147,6 @@ export const TEAMS: Team[] = [
     city: 'Barcelona',
     country: 'Spain',
     monogram: 'FCB',
-    primaryColor: '#004D98',
-    secondaryColor: '#A50044',
-    crest: 'https://media.api-sports.io/football/teams/529.png',
   },
   {
     id: 'atletico-madrid',
@@ -165,9 +159,6 @@ export const TEAMS: Team[] = [
     city: 'Madrid',
     country: 'Spain',
     monogram: 'ATM',
-    primaryColor: '#CB3524',
-    secondaryColor: '#272E61',
-    crest: 'https://media.api-sports.io/football/teams/530.png',
   },
   {
     id: 'athletic-club',
@@ -180,9 +171,6 @@ export const TEAMS: Team[] = [
     city: 'Bilbao',
     country: 'Spain',
     monogram: 'ATH',
-    primaryColor: '#EE2524',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/531.png',
   },
   {
     id: 'real-sociedad',
@@ -195,9 +183,6 @@ export const TEAMS: Team[] = [
     city: 'San Sebastián',
     country: 'Spain',
     monogram: 'RSO',
-    primaryColor: '#0067B1',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/548.png',
   },
   {
     id: 'girona',
@@ -210,9 +195,6 @@ export const TEAMS: Team[] = [
     city: 'Girona',
     country: 'Spain',
     monogram: 'GIR',
-    primaryColor: '#CC0000',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/547.png',
   },
   {
     id: 'villarreal',
@@ -225,12 +207,21 @@ export const TEAMS: Team[] = [
     city: 'Villarreal',
     country: 'Spain',
     monogram: 'VCF',
-    primaryColor: '#FDE100',
-    secondaryColor: '#005CA9',
-    crest: 'https://media.api-sports.io/football/teams/533.png',
+  },
+  {
+    id: 'real-betis',
+    name: 'Real Betis',
+    shortName: 'Betis',
+    code: 'BET',
+    leagueId: 'la-liga',
+    leagueName: 'La Liga',
+    stadium: 'Benito Villamarín',
+    city: 'Seville',
+    country: 'Spain',
+    monogram: 'RBB',
   },
 
-  // --- CHAMPIONS LEAGUE (Europe Continent Giants) ---
+  // --- UEFA CHAMPIONS LEAGUE GIANTS ---
   {
     id: 'bayern-munich',
     name: 'Bayern München',
@@ -242,9 +233,6 @@ export const TEAMS: Team[] = [
     city: 'Munich',
     country: 'Germany',
     monogram: 'FCB',
-    primaryColor: '#DC052D',
-    secondaryColor: '#0066B2',
-    crest: 'https://media.api-sports.io/football/teams/157.png',
   },
   {
     id: 'psg',
@@ -257,9 +245,6 @@ export const TEAMS: Team[] = [
     city: 'Paris',
     country: 'France',
     monogram: 'PSG',
-    primaryColor: '#004170',
-    secondaryColor: '#DA291C',
-    crest: 'https://media.api-sports.io/football/teams/85.png',
   },
   {
     id: 'inter-milan',
@@ -272,9 +257,6 @@ export const TEAMS: Team[] = [
     city: 'Milan',
     country: 'Italy',
     monogram: 'INT',
-    primaryColor: '#0066B2',
-    secondaryColor: '#000000',
-    crest: 'https://media.api-sports.io/football/teams/505.png',
   },
   {
     id: 'leverkusen',
@@ -287,9 +269,6 @@ export const TEAMS: Team[] = [
     city: 'Leverkusen',
     country: 'Germany',
     monogram: 'B04',
-    primaryColor: '#E32221',
-    secondaryColor: '#000000',
-    crest: 'https://media.api-sports.io/football/teams/168.png',
   },
   {
     id: 'dortmund',
@@ -302,9 +281,6 @@ export const TEAMS: Team[] = [
     city: 'Dortmund',
     country: 'Germany',
     monogram: 'BVB',
-    primaryColor: '#FDE100',
-    secondaryColor: '#000000',
-    crest: 'https://media.api-sports.io/football/teams/165.png',
   },
   {
     id: 'juventus',
@@ -317,9 +293,6 @@ export const TEAMS: Team[] = [
     city: 'Turin',
     country: 'Italy',
     monogram: 'JUVE',
-    primaryColor: '#000000',
-    secondaryColor: '#FFFFFF',
-    crest: 'https://media.api-sports.io/football/teams/496.png',
   },
 ];
 
