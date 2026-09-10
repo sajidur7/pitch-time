@@ -1,117 +1,118 @@
 @import "tailwindcss";
 
 :root {
-  /* Shop Palette */
-  --color-canvas-mist: #f2f4f5;
-  --color-pure-white: #ffffff;
-  --color-ink-black: #000000;
-  --color-faint-border: #ebebeb;
-  --color-muted-gray: #787574;
-  --color-cool-stone: #cccccc;
-  --color-warm-fog: #acb0aa;
-  --color-shop-violet: #5433eb;
-  --color-violet-wash: #c0b5f3;
-  --color-slate-ink: #332f2d;
-  --color-ash-veil: #665a54;
+  /* Structured Palette: Renaissance Gallery on Putty Paper */
+  --color-putty: #c4c3b6;
+  --color-ink: #000000;
+  --color-bone: #e7e5e4;
+  --color-chalk: #ebebeb;
+  --color-vellum: #dfdcd5;
+  --color-graphite: #595855;
+  --color-ash: #808080;
+  --color-paper: #ffffff;
 
   /* Typography */
-  --font-gt: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif-display: var(--font-playfair), Georgia, serif;
+  --font-grotesk: var(--font-inter), -apple-system, system-ui, sans-serif;
 }
 
 @theme {
-  --color-canvas-mist: #f2f4f5;
-  --color-pure-white: #ffffff;
-  --color-ink-black: #000000;
-  --color-faint-border: #ebebeb;
-  --color-muted-gray: #787574;
-  --color-cool-stone: #cccccc;
-  --color-shop-violet: #5433eb;
-  --color-violet-wash: #c0b5f3;
-  --color-slate-ink: #332f2d;
+  --color-putty: #c4c3b6;
+  --color-ink: #000000;
+  --color-bone: #e7e5e4;
+  --color-chalk: #ebebeb;
+  --color-vellum: #dfdcd5;
+  --color-graphite: #595855;
+  --color-paper: #ffffff;
 }
 
 html,
 body {
-  background-color: var(--color-canvas-mist);
-  color: var(--color-ink-black);
-  font-family: var(--font-gt);
-  letter-spacing: -0.025em;
+  background-color: var(--color-putty);
+  color: var(--color-ink);
+  font-family: var(--font-grotesk);
+  letter-spacing: -0.015em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Shop 28px Floating Cards with Dual-Layer Soft Shadows */
-.shop-card-floating {
-  background-color: var(--color-pure-white);
-  border-radius: 28px;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px -2px, rgba(0, 0, 0, 0.04) 0px 2px 6px -1px;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* Serif Display (Davinci substitute) */
+.font-serif-davinci {
+  font-family: var(--font-serif-display);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
 }
 
-.shop-card-floating:hover {
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 8px 24px -4px, rgba(0, 0, 0, 0.06) 0px 4px 10px -2px;
-  transform: translateY(-2px);
+/* Structured Capsule Pill Button (28.8px radius, compact padding 9px 17px) */
+.structured-pill-btn {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: 28.8px;
+  padding: 9px 17px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: none;
+  box-shadow: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
 }
 
-/* Shop Category Chip (9999px pill with subtle elevation) */
-.shop-chip {
-  background-color: var(--color-pure-white);
-  border: 1px solid var(--color-faint-border);
-  border-radius: 9999px;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 8px 0px;
+.structured-pill-btn:hover {
+  background-color: #222222;
+}
+
+.structured-pill-btn-outline {
+  background-color: transparent;
+  color: var(--color-ink);
+  border: 1px solid var(--color-ink);
+  border-radius: 28.8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: none;
   transition: all 0.15s ease;
 }
 
-.shop-chip:hover {
-  border-color: #d6d6d6;
+.structured-pill-btn-outline:hover {
+  background-color: var(--color-bone);
 }
 
-.shop-chip-active {
-  background-color: var(--color-shop-violet);
-  color: #ffffff;
-  border-color: var(--color-shop-violet);
-  box-shadow: rgba(69, 36, 219, 0.25) 0px 4px 14px 0px;
+/* Structured Flat Card (9px radius, zero shadows, hairline vellum/ink border) */
+.structured-card {
+  background-color: var(--color-bone);
+  border-radius: 9px;
+  border: 1px solid var(--color-vellum);
+  box-shadow: none;
+  transition: border-color 0.15s ease;
 }
 
-/* Shop Violet Submit Button with Tinted Glow */
-.shop-violet-btn {
-  background-color: var(--color-shop-violet);
-  color: #ffffff;
-  border-radius: 9999px;
-  box-shadow: rgba(69, 36, 219, 0.34) 0px 4px 24px 0px;
-  transition: all 0.15s ease-in-out;
+.structured-card:hover {
+  border-color: var(--color-ink);
 }
 
-.shop-violet-btn:hover {
-  filter: brightness(1.06);
-  transform: scale(1.02);
+.structured-card-dark {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: 9px;
+  box-shadow: none;
 }
 
-/* Shop Pill Controls */
-.shop-pill-white {
-  background-color: var(--color-pure-white);
-  border: 1px solid var(--color-faint-border);
-  border-radius: 9999px;
-  box-shadow: rgba(0, 0, 0, 0.04) 0px 2px 6px 0px;
-  transition: all 0.15s ease;
+/* Hairline rule */
+.hairline-vellum {
+  border-color: var(--color-vellum);
 }
 
-.shop-pill-white:hover {
-  border-color: #d1d1d1;
-}
-
-/* Custom Scrollbar for Shop style */
+/* Custom Scrollbar for Structured Gallery */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-canvas-mist);
+  background: var(--color-putty);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6d9dc;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-muted-gray);
+  background: var(--color-graphite);
+  border-radius: 9px;
 }

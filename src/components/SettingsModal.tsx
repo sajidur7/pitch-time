@@ -5,7 +5,8 @@ import { useUser } from '@/context/UserContext';
 import { TEAMS } from '@/lib/teams-data';
 import { COMMON_TIMEZONES, getCurrentTimeInZone } from '@/lib/timezone';
 import { sendTestNotification, getNotificationPermission, requestNotificationPermission } from '@/lib/push-notifications';
-import { X, Search, Bell, Clock, Trash2, Plus, Send, Check } from 'lucide-react';
+import { X, Search, Bell, Clock, Trash2, Plus, Send } from 'lucide-react';
+import { PitchTimeLogo } from './PitchTimeLogo';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -44,9 +45,9 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   );
 
   const handleSendTestPush = async () => {
-    setTestStatus('Dispatching test alert...');
+    setTestStatus('Dispatching test notification...');
     const res = await sendTestNotification(
-      'pitch time • Kickoff Alert',
+      'pitch time. Kickoff Alert',
       `Match starts in 10 minutes! Local time: ${preferences.timezone}`
     );
     setTestStatus(res.message);
@@ -54,59 +55,57 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
       <div
-        className="bg-white w-full max-w-xl max-h-[90vh] rounded-[28px] flex flex-col shadow-2xl overflow-hidden border border-[#ebebeb]"
+        className="bg-[#e7e5e4] w-full max-w-xl max-h-[90vh] rounded-[9px] flex flex-col shadow-2xl overflow-hidden border border-black"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Shop Modal Header */}
-        <div className="p-6 border-b border-[#ebebeb] flex items-center justify-between">
-          <div className="space-y-0.5">
-            <span className="text-[11px] font-semibold text-[#5433eb] uppercase tracking-wider">
-              Preferences
-            </span>
-            <h2 className="text-xl font-medium text-black tracking-tight">
-              Tracker Settings
+        {/* Header */}
+        <div className="p-6 border-b border-[#dfdcd5] bg-[#dfdcd5]/30 flex items-center justify-between">
+          <div className="space-y-1">
+            <PitchTimeLogo size="sm" />
+            <h2 className="text-xl font-normal font-serif-davinci text-black tracking-tight">
+              Tracker Preferences & Folio
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#f2f4f5] hover:bg-[#ebebeb] flex items-center justify-center text-[#787574] hover:text-black transition-colors"
+            className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors"
             title="Close"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Shop Segmented Tab Switcher */}
-        <div className="p-4 bg-[#f2f4f5] border-b border-[#ebebeb]">
-          <div className="inline-flex w-full bg-white p-1 rounded-full space-x-1 border border-[#ebebeb]">
+        {/* Segmented Tab Switcher */}
+        <div className="p-4 border-b border-[#dfdcd5] bg-[#e7e5e4]">
+          <div className="inline-flex w-full bg-[#dfdcd5]/40 p-1 rounded-[9px] space-x-1 border border-[#dfdcd5]">
             <button
               onClick={() => setActiveTab('teams')}
-              className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
                 activeTab === 'teams'
-                  ? 'bg-[#5433eb] text-white shadow-[0_2px_10px_rgba(69,36,219,0.3)]'
-                  : 'text-[#787574] hover:text-black'
+                  ? 'bg-black text-white font-medium'
+                  : 'text-[#595855] hover:text-black'
               }`}
             >
               Clubs ({preferences.favoriteTeamIds?.length || 0}/5)
             </button>
             <button
               onClick={() => setActiveTab('timezone')}
-              className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
                 activeTab === 'timezone'
-                  ? 'bg-[#5433eb] text-white shadow-[0_2px_10px_rgba(69,36,219,0.3)]'
-                  : 'text-[#787574] hover:text-black'
+                  ? 'bg-black text-white font-medium'
+                  : 'text-[#595855] hover:text-black'
               }`}
             >
               Timezone
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
-              className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
                 activeTab === 'notifications'
-                  ? 'bg-[#5433eb] text-white shadow-[0_2px_10px_rgba(69,36,219,0.3)]'
-                  : 'text-[#787574] hover:text-black'
+                  ? 'bg-black text-white font-medium'
+                  : 'text-[#595855] hover:text-black'
               }`}
             >
               Alerts
@@ -116,16 +115,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* TAB 1: FAVORITE CLUBS (Typographic Badges - NO image dependencies) */}
+          {/* TAB 1: FAVORITE CLUBS */}
           {activeTab === 'teams' && (
             <div className="space-y-6">
               <div>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xs font-medium text-[#787574]">
-                    Your Tracked Clubs
-                  </h3>
-                  <span className="text-xs font-medium text-[#5433eb]">
-                    {preferences.favoriteTeamIds?.length || 0} of 5 selected
+                <div className="flex items-center justify-between mb-3 font-mono text-xs">
+                  <span className="text-[#595855] uppercase">
+                    CURRENTLY TRACKED CLUBS
+                  </span>
+                  <span className="font-semibold text-black">
+                    {preferences.favoriteTeamIds?.length || 0} OF 5 SELECTED
                   </span>
                 </div>
 
@@ -133,10 +132,10 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   {currentTeams.map((team) => (
                     <div
                       key={team.id}
-                      className="p-3 bg-[#f2f4f5] rounded-2xl flex items-center justify-between border border-[#ebebeb]/60"
+                      className="p-3 bg-white rounded-[9px] border border-[#dfdcd5] flex items-center justify-between"
                     >
                       <div className="flex items-center space-x-2 min-w-0">
-                        <span className="px-2 py-0.5 rounded-full bg-white text-black text-xs font-semibold border border-[#ebebeb] shrink-0">
+                        <span className="px-2 py-0.5 rounded-[2px] bg-[#e7e5e4] text-black text-[10px] font-mono font-bold shrink-0">
                           {team.code}
                         </span>
                         <span className="text-xs font-medium text-black truncate">
@@ -145,7 +144,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                       </div>
                       <button
                         onClick={() => toggleFavoriteTeam(team.id)}
-                        className="text-[#787574] hover:text-red-500 p-1 rounded-full"
+                        className="text-[#595855] hover:text-black p-1"
                         title="Remove club"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -157,44 +156,44 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
               {/* Add more clubs */}
               {(preferences.favoriteTeamIds?.length || 0) < 5 ? (
-                <div className="space-y-3 pt-4 border-t border-[#ebebeb]">
-                  <label className="block text-xs font-medium text-[#787574]">
-                    Add a club to tracker
+                <div className="space-y-3 pt-4 border-t border-[#dfdcd5]">
+                  <label className="block text-xs font-mono uppercase text-[#595855]">
+                    Add Club to Tracker
                   </label>
                   <div className="relative">
-                    <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#787574]" />
+                    <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#595855]" />
                     <input
                       type="text"
                       value={teamSearch}
                       onChange={(e) => setTeamSearch(e.target.value)}
                       placeholder="Search club name (e.g. Arsenal, Real Madrid, Bayern)..."
-                      className="w-full pl-9 pr-4 py-2 bg-[#f2f4f5] border border-[#ebebeb] rounded-full text-xs font-medium focus:outline-none focus:border-[#5433eb] focus:bg-white transition-all"
+                      className="w-full pl-9 pr-4 py-2 bg-white border border-[#dfdcd5] rounded-[9px] text-xs font-mono focus:outline-none focus:border-black"
                     />
                   </div>
 
-                  <div className="max-h-44 overflow-y-auto border border-[#ebebeb] rounded-2xl divide-y divide-[#ebebeb] bg-white">
+                  <div className="max-h-44 overflow-y-auto border border-[#dfdcd5] rounded-[9px] divide-y divide-[#dfdcd5] bg-white">
                     {filteredAvailableTeams.map((team) => (
                       <div
                         key={team.id}
-                        className="px-3.5 py-2.5 text-xs flex items-center justify-between hover:bg-[#f2f4f5]"
+                        className="px-3.5 py-2.5 text-xs font-mono flex items-center justify-between hover:bg-[#e7e5e4]"
                       >
                         <div className="flex items-center space-x-2">
-                          <span className="font-semibold text-black">{team.code}</span>
-                          <span className="font-medium text-black">{team.name}</span>
-                          <span className="text-[11px] text-[#787574]">({team.leagueName})</span>
+                          <span className="font-bold text-black">{team.code}</span>
+                          <span className="text-black">{team.name}</span>
+                          <span className="text-[10px] text-[#595855]">({team.leagueName})</span>
                         </div>
                         <button
                           onClick={() => toggleFavoriteTeam(team.id)}
-                          className="px-3 py-1 bg-[#5433eb] text-white rounded-full text-[11px] font-medium hover:brightness-105"
+                          className="px-2.5 py-1 bg-black text-white text-[10px] font-mono uppercase rounded-[2px]"
                         >
-                          Add +
+                          ADD +
                         </button>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="p-3 bg-[#f2f4f5] rounded-2xl text-xs font-medium text-[#787574] text-center border border-[#ebebeb]">
+                <div className="p-3 bg-white rounded-[9px] border border-[#dfdcd5] text-xs font-mono text-[#595855] text-center">
                   Maximum of 5 clubs tracked. Remove a club above to add another.
                 </div>
               )}
@@ -204,34 +203,34 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 2: TIMEZONE */}
           {activeTab === 'timezone' && (
             <div className="space-y-4">
-              <div className="p-4 bg-[#f2f4f5] rounded-2xl space-y-1 border border-[#ebebeb]">
-                <span className="text-[11px] font-medium uppercase text-[#5433eb]">
-                  Active Timezone
+              <div className="p-4 bg-white rounded-[9px] border border-[#dfdcd5] space-y-1">
+                <span className="text-[10px] font-mono uppercase text-[#595855]">
+                  ACTIVE TIMEZONE
                 </span>
-                <div className="text-lg font-semibold text-black">
+                <div className="text-lg font-mono font-bold text-black">
                   {preferences.timezone}
                 </div>
-                <div className="text-xs text-[#787574]">
-                  Current Time: {getCurrentTimeInZone(preferences.timezone)}
+                <div className="text-xs font-mono text-[#595855]">
+                  CURRENT LOCAL TIME: {getCurrentTimeInZone(preferences.timezone)}
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-medium text-[#787574]">
-                  Switch Timezone
+                <label className="block text-xs font-mono uppercase text-[#595855]">
+                  SWITCH TIMEZONE
                 </label>
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#787574]" />
+                  <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#595855]" />
                   <input
                     type="text"
                     value={tzSearch}
                     onChange={(e) => setTzSearch(e.target.value)}
                     placeholder="Search timezone (e.g. London, Madrid, New York, Tokyo)..."
-                    className="w-full pl-9 pr-4 py-2 bg-[#f2f4f5] border border-[#ebebeb] rounded-full text-xs font-medium focus:outline-none focus:border-[#5433eb] focus:bg-white transition-all"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-[#dfdcd5] rounded-[9px] text-xs font-mono focus:outline-none focus:border-black"
                   />
                 </div>
 
-                <div className="max-h-56 overflow-y-auto border border-[#ebebeb] rounded-2xl divide-y divide-[#ebebeb] bg-white">
+                <div className="max-h-56 overflow-y-auto border border-[#dfdcd5] rounded-[9px] divide-y divide-[#dfdcd5] bg-white">
                   {filteredTimezones.map((tz) => {
                     const isSelected = preferences.timezone === tz.value;
                     return (
@@ -239,12 +238,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                         key={tz.value}
                         type="button"
                         onClick={() => updateTimezone(tz.value)}
-                        className={`w-full px-4 py-2.5 text-left text-xs flex items-center justify-between transition-colors ${
-                          isSelected ? 'bg-[#5433eb] text-white font-medium' : 'hover:bg-[#f2f4f5] text-black'
+                        className={`w-full px-4 py-2.5 text-left text-xs font-mono flex items-center justify-between transition-colors ${
+                          isSelected ? 'bg-black text-white font-semibold' : 'hover:bg-[#e7e5e4] text-black'
                         }`}
                       >
                         <span>{tz.label}</span>
-                        <span className={`text-[11px] ${isSelected ? 'text-white/80' : 'text-[#787574]'}`}>
+                        <span className={`text-[11px] ${isSelected ? 'text-white' : 'text-[#595855]'}`}>
                           {tz.offset}
                         </span>
                       </button>
@@ -258,38 +257,38 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 3: NOTIFICATIONS */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              <div className="p-4 bg-[#f2f4f5] rounded-2xl space-y-3 border border-[#ebebeb]">
+              <div className="p-4 bg-white rounded-[9px] border border-[#dfdcd5] space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-medium text-[#787574] block">
-                      Browser Push Service
+                    <span className="text-xs font-mono uppercase text-[#595855] block">
+                      PUSH SERVICE
                     </span>
-                    <span className="text-sm font-semibold text-black">
-                      Permission: {getNotificationPermission()}
+                    <span className="text-sm font-mono font-semibold text-black">
+                      STATUS: {getNotificationPermission().toUpperCase()}
                     </span>
                   </div>
                   <button
                     onClick={async () => {
                       await requestNotificationPermission();
                     }}
-                    className="px-3.5 py-1.5 bg-white text-black border border-[#ebebeb] rounded-full text-xs font-medium hover:bg-neutral-50"
+                    className="px-3 py-1 bg-[#e7e5e4] text-black border border-black rounded-[28.8px] text-xs font-mono uppercase hover:bg-black hover:text-white"
                   >
-                    Request Permission
+                    REQUEST PERMISSION
                   </button>
                 </div>
 
-                <div className="pt-2 border-t border-[#ebebeb]">
+                <div className="pt-2 border-t border-[#dfdcd5]">
                   <button
                     id="test-notification-btn"
                     onClick={handleSendTestPush}
-                    className="w-full shop-violet-btn py-2.5 text-xs font-medium flex items-center justify-center space-x-2"
+                    className="w-full structured-pill-btn py-2 text-xs flex items-center justify-center space-x-2"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>Send Instant Test Push Notification</span>
+                    <span>SEND INSTANT TEST PUSH NOTIFICATION</span>
                   </button>
 
                   {testStatus && (
-                    <div className="mt-2 p-2 bg-white rounded-xl text-xs font-medium text-black text-center border border-[#ebebeb]">
+                    <div className="mt-2 p-2 bg-[#e7e5e4] rounded-[9px] text-xs font-mono text-black text-center border border-[#dfdcd5]">
                       {testStatus}
                     </div>
                   )}
@@ -298,40 +297,40 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
               {/* Toggles */}
               <div className="space-y-3">
-                <label className="flex items-center space-x-3 p-3.5 bg-[#f2f4f5] rounded-2xl cursor-pointer hover:bg-white border border-[#ebebeb] transition-colors">
+                <label className="flex items-center space-x-3 p-3.5 bg-white rounded-[9px] cursor-pointer hover:bg-[#eae8e7] border border-[#dfdcd5] transition-colors">
                   <input
                     type="checkbox"
                     checked={preferences.notification10Min}
                     onChange={(e) =>
                       updateNotificationPreferences({ notification10Min: e.target.checked })
                     }
-                    className="w-4 h-4 accent-[#5433eb]"
+                    className="w-4 h-4 accent-black"
                   />
                   <div>
-                    <span className="text-sm font-medium text-black block">
-                      10-Minute Kickoff Alert
+                    <span className="text-sm font-mono font-medium text-black block">
+                      10-MINUTE KICKOFF ALERT
                     </span>
-                    <span className="text-xs text-[#787574] block">
+                    <span className="text-xs font-mono text-[#595855] block">
                       Sends notification 10 minutes prior to match start
                     </span>
                   </div>
                 </label>
 
-                <label className="flex items-center space-x-3 p-3.5 bg-[#f2f4f5] rounded-2xl cursor-pointer hover:bg-white border border-[#ebebeb] transition-colors">
+                <label className="flex items-center space-x-3 p-3.5 bg-white rounded-[9px] cursor-pointer hover:bg-[#eae8e7] border border-[#dfdcd5] transition-colors">
                   <input
                     type="checkbox"
                     checked={preferences.notificationKickoff}
                     onChange={(e) =>
                       updateNotificationPreferences({ notificationKickoff: e.target.checked })
                     }
-                    className="w-4 h-4 accent-[#5433eb]"
+                    className="w-4 h-4 accent-black"
                   />
                   <div>
-                    <span className="text-sm font-medium text-black block">
-                      Kickoff Whistle Alert
+                    <span className="text-sm font-mono font-medium text-black block">
+                      KICKOFF WHISTLE ALERT
                     </span>
-                    <span className="text-xs text-[#787574] block">
-                      Sends notification when match officially kicks off
+                    <span className="text-xs font-mono text-[#595855] block">
+                      Sends notification at match start
                     </span>
                   </div>
                 </label>
@@ -341,12 +340,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 bg-[#f2f4f5] border-t border-[#ebebeb] flex justify-end">
+        <div className="p-4 border-t border-[#dfdcd5] bg-[#dfdcd5]/30 flex justify-end">
           <button
             onClick={onClose}
-            className="shop-violet-btn px-6 py-2 text-xs font-medium"
+            className="structured-pill-btn px-6 py-2 text-xs"
           >
-            Done
+            CONFIRM & CLOSE
           </button>
         </div>
       </div>

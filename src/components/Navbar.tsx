@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { useUser } from '@/context/UserContext';
-import { Settings, Bell, Clock, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { Settings, Bell, Clock, SlidersHorizontal } from 'lucide-react';
 import { getCurrentTimeInZone } from '@/lib/timezone';
 import { getNotificationPermission, PermissionState } from '@/lib/push-notifications';
+import { PitchTimeLogo } from './PitchTimeLogo';
 
 interface NavbarProps {
   onOpenSettings: () => void;
@@ -26,58 +27,61 @@ export function Navbar({ onOpenSettings }: NavbarProps) {
   }, [preferences.timezone]);
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#ebebeb]">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        {/* Shop Wordmark: pitch time with violet dot */}
-        <div className="flex items-center space-x-2">
-          <span className="text-xl sm:text-2xl font-semibold tracking-[-0.04em] text-black">
-            pitch time
-            <span className="text-[#5433eb] font-black text-2xl leading-none">.</span>
-          </span>
-          <span className="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-[#f2f4f5] text-[#787574] border border-[#ebebeb]">
-            live tracker
+    <header className="sticky top-0 z-40 bg-[#c4c3b6]/95 backdrop-blur-xs border-b border-[#dfdcd5]">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-8 h-16 flex items-center justify-between">
+        {/* Gallery Monogram + Wordmark */}
+        <div className="flex items-center space-x-3">
+          <div className="w-7 h-7 rounded-full border border-black flex items-center justify-center text-black font-semibold text-xs select-none">
+            P
+          </div>
+          <PitchTimeLogo size="sm" />
+          <span className="hidden md:inline-block text-[11px] font-mono uppercase tracking-wider text-[#595855] pl-2 border-l border-[#dfdcd5]">
+            MATCH EXHIBITION
           </span>
         </div>
 
-        {/* Right Action Cluster (Shop Pill Components) */}
+        {/* Right Actions: Stat & Capsule Pill Buttons */}
         <div className="flex items-center space-x-2 sm:space-x-3">
-          {/* Timezone Pill Button */}
+          {/* Timezone Stat Capsule */}
           <button
             onClick={onOpenSettings}
-            className="shop-pill-white flex items-center space-x-2 px-3 sm:px-4 py-2 text-xs text-[#000000] transition-colors"
+            className="flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-[#595855]/40 hover:border-black text-xs font-mono tracking-tight text-black transition-colors"
             title="Adjust timezone in settings"
           >
-            <Clock className="w-3.5 h-3.5 text-[#787574]" />
-            <span className="max-w-[130px] sm:max-w-[170px] truncate font-medium">
+            <span className="text-[10px] text-[#595855] uppercase">ZONE:</span>
+            <span className="font-medium max-w-[130px] sm:max-w-[170px] truncate">
               {preferences.timezone.split('/')[1]?.replace('_', ' ') || preferences.timezone}
             </span>
-            <span className="text-[#cccccc] hidden md:inline">•</span>
-            <span className="text-[#787574] font-mono hidden md:inline">
+            <span className="text-[#595855] hidden sm:inline">•</span>
+            <span className="text-[#595855] hidden sm:inline">
               {currentTimeStr.split('•')[1] || ''}
             </span>
           </button>
 
-          {/* Notification Pill */}
+          {/* Notification Indicator Capsule */}
           <button
             onClick={onOpenSettings}
-            className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase flex items-center space-x-1.5 transition-colors ${
               permState === 'granted'
-                ? 'bg-[#5433eb] text-white shadow-[0_4px_14px_rgba(69,36,219,0.3)]'
-                : 'shop-pill-white text-[#787574] hover:text-black'
+                ? 'bg-black text-white'
+                : 'border border-[#595855]/40 text-black hover:border-black'
             }`}
             title={`Notifications: ${permState}`}
           >
-            <Bell className="w-4 h-4" />
+            <Bell className="w-3 h-3" />
+            <span className="text-[11px] hidden sm:inline">
+              {permState === 'granted' ? 'ALERTS ON' : 'ALERTS'}
+            </span>
           </button>
 
           {/* Settings Trigger */}
           <button
             id="settings-trigger-btn"
             onClick={onOpenSettings}
-            className="shop-pill-white w-9 h-9 flex items-center justify-center text-[#787574] hover:text-black transition-colors"
-            title="Preferences"
+            className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors"
+            title="Settings"
           >
-            <SlidersHorizontal className="w-4 h-4" />
+            <SlidersHorizontal className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>

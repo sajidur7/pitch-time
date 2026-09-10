@@ -1,26 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/context/UserContext";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "pitch time • Football Match Tracker & Push Alerts",
+  title: "pitch time. — Match Kickoff Folio",
   description:
-    "Explore upcoming club football matches across Champions League, Premier League, and La Liga. Converted to your local timezone with instant browser push notifications.",
-  keywords: [
-    "pitch time",
-    "Football Match Tracker",
-    "Kickoff Alerts",
-    "Champions League",
-    "Premier League",
-    "La Liga",
-  ],
+    "A Renaissance gallery exhibition of upcoming club football fixtures. Real match schedules for Champions League, Premier League, and La Liga converted to your local time.",
   manifest: "/manifest.json",
   icons: {
     icon: "/icon.png",
@@ -29,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#5433eb",
+  themeColor: "#c4c3b6",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -41,11 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable} h-full antialiased`}>
       <head>
         <link rel="icon" href="/icon.png" type="image/png" />
       </head>
-      <body className="min-h-full flex flex-col bg-[#f2f4f5] text-[#000000] selection:bg-[#5433eb] selection:text-white">
+      <body className="min-h-full flex flex-col bg-[#c4c3b6] text-[#000000] selection:bg-black selection:text-white">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>

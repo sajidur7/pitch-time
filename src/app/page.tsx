@@ -12,21 +12,21 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen flex items-center justify-center bg-[#f2f4f5]">
-        <div className="flex items-center space-x-3 text-xs font-medium text-[#787574]">
-          <div className="w-2.5 h-2.5 rounded-full bg-[#5433eb] animate-ping" />
-          <span>Synchronizing pitch time fixtures...</span>
+      <main className="min-h-screen flex items-center justify-center bg-[#c4c3b6]">
+        <div className="flex items-center space-x-3 text-xs font-mono uppercase text-[#595855]">
+          <div className="w-2 h-2 rounded-full bg-black animate-ping" />
+          <span>SYNCHRONIZING PITCH TIME FOLIO...</span>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-[#f2f4f5] text-black flex flex-col justify-between">
-      {/* Persistent Shop Header */}
+    <main className="min-h-screen bg-[#c4c3b6] text-black flex flex-col justify-between">
+      {/* Structured Minimal Header */}
       <Navbar onOpenSettings={() => setIsSettingsOpen(true)} />
 
-      {/* Main Kickoff Discovery Dashboard */}
+      {/* Main Kickoff Gallery Dashboard */}
       <div className="flex-1">
         <DashboardView onOpenSettings={() => setIsSettingsOpen(true)} />
       </div>
