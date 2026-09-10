@@ -132,9 +132,6 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
           </h1>
         </div>
 
-        <p className="text-sm sm:text-base text-[#615d59] leading-relaxed max-w-lg mx-auto">
-          Real live club matches across Champions League, Premier League, and La Liga. Auto-converted to local time with instant 10-minute browser alerts.
-        </p>
 
         {/* Notion Two-Button CTA Row */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
