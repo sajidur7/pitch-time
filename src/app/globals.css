@@ -1,118 +1,131 @@
 @import "tailwindcss";
 
 :root {
-  /* Structured Palette: Renaissance Gallery on Putty Paper */
-  --color-putty: #c4c3b6;
-  --color-ink: #000000;
-  --color-bone: #e7e5e4;
-  --color-chalk: #ebebeb;
-  --color-vellum: #dfdcd5;
-  --color-graphite: #595855;
-  --color-ash: #808080;
-  --color-paper: #ffffff;
+  /* Notion Palette: Warm Paper Notebook */
+  --color-notion-blue: #0075de;
+  --color-paper-warmth: #f6f5f4;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-charcoal: #111111;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
+  --color-signal-blue: #097fe8;
+  --color-sky-wash: #62aef0;
+  --color-midnight-ink: #02093a;
 
   /* Typography */
-  --font-serif-display: var(--font-playfair), Georgia, serif;
-  --font-grotesk: var(--font-inter), -apple-system, system-ui, sans-serif;
+  --font-notion: var(--font-inter), system-ui, -apple-system, sans-serif;
 }
 
 @theme {
-  --color-putty: #c4c3b6;
-  --color-ink: #000000;
-  --color-bone: #e7e5e4;
-  --color-chalk: #ebebeb;
-  --color-vellum: #dfdcd5;
-  --color-graphite: #595855;
-  --color-paper: #ffffff;
+  --color-notion-blue: #0075de;
+  --color-paper-warmth: #f6f5f4;
+  --color-pure-white: #ffffff;
+  --color-ink-black: #000000;
+  --color-charcoal: #111111;
+  --color-stone: #757575;
+  --color-graphite: #615d59;
+  --color-slate: #696969;
+  --color-sky-tint: #e6f3fe;
+  --color-marigold: #ffb110;
+  --color-coral: #f64932;
 }
 
 html,
 body {
-  background-color: var(--color-putty);
-  color: var(--color-ink);
-  font-family: var(--font-grotesk);
-  letter-spacing: -0.015em;
+  background-color: var(--color-paper-warmth);
+  color: var(--color-ink-black);
+  font-family: var(--font-notion);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Serif Display (Davinci substitute) */
-.font-serif-davinci {
-  font-family: var(--font-serif-display);
-  font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 0.9;
-}
-
-/* Structured Capsule Pill Button (28.8px radius, compact padding 9px 17px) */
-.structured-pill-btn {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
-  border-radius: 28.8px;
-  padding: 9px 17px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  border: none;
-  box-shadow: none;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.structured-pill-btn:hover {
-  background-color: #222222;
-}
-
-.structured-pill-btn-outline {
-  background-color: transparent;
-  color: var(--color-ink);
-  border: 1px solid var(--color-ink);
-  border-radius: 28.8px;
-  padding: 8px 16px;
-  font-size: 12px;
-  font-weight: 500;
-  box-shadow: none;
-  transition: all 0.15s ease;
-}
-
-.structured-pill-btn-outline:hover {
-  background-color: var(--color-bone);
-}
-
-/* Structured Flat Card (9px radius, zero shadows, hairline vellum/ink border) */
-.structured-card {
-  background-color: var(--color-bone);
-  border-radius: 9px;
-  border: 1px solid var(--color-vellum);
+/* Notion White Content Card (12px radius, hairline border, no shadows) */
+.notion-card {
+  background-color: var(--color-pure-white);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow: none;
   transition: border-color 0.15s ease;
 }
 
-.structured-card:hover {
-  border-color: var(--color-ink);
+.notion-card:hover {
+  border-color: rgba(0, 0, 0, 0.16);
 }
 
-.structured-card-dark {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
-  border-radius: 9px;
-  box-shadow: none;
+/* Notion Primary Action Button (8px radius, Notion Blue fill) */
+.notion-btn-primary {
+  background-color: var(--color-notion-blue);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+  border: none;
 }
 
-/* Hairline rule */
-.hairline-vellum {
-  border-color: var(--color-vellum);
+.notion-btn-primary:hover {
+  background-color: #0060b8;
 }
 
-/* Custom Scrollbar for Structured Gallery */
+/* Notion Ghost Button (Sky Tint #e6f3fe fill with Notion Blue text) */
+.notion-btn-ghost {
+  background-color: var(--color-sky-tint);
+  color: var(--color-notion-blue);
+  border-radius: 8px;
+  padding: 6px 15px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.notion-btn-ghost:hover {
+  background-color: #d8ecfd;
+}
+
+/* Notion Outlined Button */
+.notion-btn-outline {
+  background-color: var(--color-pure-white);
+  color: var(--color-charcoal);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.notion-btn-outline:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Notion Hero Highlight Pill */
+.notion-highlight-pill {
+  background-color: #f6d5b8;
+  color: #000000;
+  border-radius: 9999px;
+  padding: 2px 14px;
+  display: inline-block;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-putty);
+  background: var(--color-paper-warmth);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-graphite);
-  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.28);
 }

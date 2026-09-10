@@ -45,7 +45,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   );
 
   const handleSendTestPush = async () => {
-    setTestStatus('Dispatching test notification...');
+    setTestStatus('Sending test alert...');
     const res = await sendTestNotification(
       'pitch time. Kickoff Alert',
       `Match starts in 10 minutes! Local time: ${preferences.timezone}`
@@ -55,57 +55,57 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150">
       <div
-        className="bg-[#e7e5e4] w-full max-w-xl max-h-[90vh] rounded-[9px] flex flex-col shadow-2xl overflow-hidden border border-black"
+        className="bg-white w-full max-w-xl max-h-[90vh] rounded-[12px] flex flex-col shadow-2xl overflow-hidden border border-black/10"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-[#dfdcd5] bg-[#dfdcd5]/30 flex items-center justify-between">
+        <div className="p-6 border-b border-black/8 flex items-center justify-between">
           <div className="space-y-1">
             <PitchTimeLogo size="sm" />
-            <h2 className="text-xl font-normal font-serif-davinci text-black tracking-tight">
-              Tracker Preferences & Folio
+            <h2 className="text-xl font-semibold text-black tracking-tight">
+              Tracker Preferences
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full border border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-colors"
+            className="w-8 h-8 rounded-[8px] bg-black/5 hover:bg-black/10 flex items-center justify-center text-black/60 hover:text-black transition-colors"
             title="Close"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Segmented Tab Switcher */}
-        <div className="p-4 border-b border-[#dfdcd5] bg-[#e7e5e4]">
-          <div className="inline-flex w-full bg-[#dfdcd5]/40 p-1 rounded-[9px] space-x-1 border border-[#dfdcd5]">
+        {/* Notion Segmented Tab Switcher */}
+        <div className="p-3 bg-[#f6f5f4] border-b border-black/8">
+          <div className="inline-flex w-full bg-black/5 p-1 rounded-[8px] space-x-1">
             <button
               onClick={() => setActiveTab('teams')}
-              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-medium transition-all ${
                 activeTab === 'teams'
-                  ? 'bg-black text-white font-medium'
-                  : 'text-[#595855] hover:text-black'
+                  ? 'bg-white text-black shadow-xs'
+                  : 'text-black/60 hover:text-black'
               }`}
             >
               Clubs ({preferences.favoriteTeamIds?.length || 0}/5)
             </button>
             <button
               onClick={() => setActiveTab('timezone')}
-              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-medium transition-all ${
                 activeTab === 'timezone'
-                  ? 'bg-black text-white font-medium'
-                  : 'text-[#595855] hover:text-black'
+                  ? 'bg-white text-black shadow-xs'
+                  : 'text-black/60 hover:text-black'
               }`}
             >
               Timezone
             </button>
             <button
               onClick={() => setActiveTab('notifications')}
-              className={`flex-1 py-1.5 rounded-[6px] text-xs font-mono uppercase transition-colors ${
+              className={`flex-1 py-1.5 rounded-[6px] text-xs font-medium transition-all ${
                 activeTab === 'notifications'
-                  ? 'bg-black text-white font-medium'
-                  : 'text-[#595855] hover:text-black'
+                  ? 'bg-white text-black shadow-xs'
+                  : 'text-black/60 hover:text-black'
               }`}
             >
               Alerts
@@ -115,16 +115,16 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
         {/* Modal Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
-          {/* TAB 1: FAVORITE CLUBS */}
+          {/* TAB 1: FAVORITE CLUBS (Typographic Badges - NO image dependencies) */}
           {activeTab === 'teams' && (
             <div className="space-y-6">
               <div>
-                <div className="flex items-center justify-between mb-3 font-mono text-xs">
-                  <span className="text-[#595855] uppercase">
-                    CURRENTLY TRACKED CLUBS
-                  </span>
-                  <span className="font-semibold text-black">
-                    {preferences.favoriteTeamIds?.length || 0} OF 5 SELECTED
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-xs font-medium text-black/60">
+                    Your Tracked Clubs
+                  </h3>
+                  <span className="text-xs font-medium text-[#0075de]">
+                    {preferences.favoriteTeamIds?.length || 0} of 5 selected
                   </span>
                 </div>
 
@@ -132,10 +132,10 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                   {currentTeams.map((team) => (
                     <div
                       key={team.id}
-                      className="p-3 bg-white rounded-[9px] border border-[#dfdcd5] flex items-center justify-between"
+                      className="p-3 bg-[#f6f5f4] rounded-[8px] flex items-center justify-between border border-black/5"
                     >
                       <div className="flex items-center space-x-2 min-w-0">
-                        <span className="px-2 py-0.5 rounded-[2px] bg-[#e7e5e4] text-black text-[10px] font-mono font-bold shrink-0">
+                        <span className="px-2 py-0.5 rounded-[4px] bg-white text-black text-xs font-bold border border-black/10 shrink-0">
                           {team.code}
                         </span>
                         <span className="text-xs font-medium text-black truncate">
@@ -144,7 +144,7 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                       </div>
                       <button
                         onClick={() => toggleFavoriteTeam(team.id)}
-                        className="text-[#595855] hover:text-black p-1"
+                        className="text-black/40 hover:text-red-600 p-1"
                         title="Remove club"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -156,44 +156,44 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
               {/* Add more clubs */}
               {(preferences.favoriteTeamIds?.length || 0) < 5 ? (
-                <div className="space-y-3 pt-4 border-t border-[#dfdcd5]">
-                  <label className="block text-xs font-mono uppercase text-[#595855]">
+                <div className="space-y-3 pt-4 border-t border-black/8">
+                  <label className="block text-xs font-medium text-black/60">
                     Add Club to Tracker
                   </label>
                   <div className="relative">
-                    <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#595855]" />
+                    <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-black/40" />
                     <input
                       type="text"
                       value={teamSearch}
                       onChange={(e) => setTeamSearch(e.target.value)}
                       placeholder="Search club name (e.g. Arsenal, Real Madrid, Bayern)..."
-                      className="w-full pl-9 pr-4 py-2 bg-white border border-[#dfdcd5] rounded-[9px] text-xs font-mono focus:outline-none focus:border-black"
+                      className="w-full pl-9 pr-4 py-2 bg-white border border-black/10 rounded-[8px] text-xs focus:outline-none focus:border-[#0075de]"
                     />
                   </div>
 
-                  <div className="max-h-44 overflow-y-auto border border-[#dfdcd5] rounded-[9px] divide-y divide-[#dfdcd5] bg-white">
+                  <div className="max-h-44 overflow-y-auto border border-black/10 rounded-[8px] divide-y divide-black/5 bg-white">
                     {filteredAvailableTeams.map((team) => (
                       <div
                         key={team.id}
-                        className="px-3.5 py-2.5 text-xs font-mono flex items-center justify-between hover:bg-[#e7e5e4]"
+                        className="px-3.5 py-2 text-xs flex items-center justify-between hover:bg-[#f6f5f4]"
                       >
                         <div className="flex items-center space-x-2">
                           <span className="font-bold text-black">{team.code}</span>
                           <span className="text-black">{team.name}</span>
-                          <span className="text-[10px] text-[#595855]">({team.leagueName})</span>
+                          <span className="text-[11px] text-black/50">({team.leagueName})</span>
                         </div>
                         <button
                           onClick={() => toggleFavoriteTeam(team.id)}
-                          className="px-2.5 py-1 bg-black text-white text-[10px] font-mono uppercase rounded-[2px]"
+                          className="px-2.5 py-1 bg-[#0075de] text-white rounded-[6px] text-[11px] font-medium"
                         >
-                          ADD +
+                          Add +
                         </button>
                       </div>
                     ))}
                   </div>
                 </div>
               ) : (
-                <div className="p-3 bg-white rounded-[9px] border border-[#dfdcd5] text-xs font-mono text-[#595855] text-center">
+                <div className="p-3 bg-[#f6f5f4] rounded-[8px] text-xs font-medium text-black/60 text-center">
                   Maximum of 5 clubs tracked. Remove a club above to add another.
                 </div>
               )}
@@ -203,34 +203,34 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 2: TIMEZONE */}
           {activeTab === 'timezone' && (
             <div className="space-y-4">
-              <div className="p-4 bg-white rounded-[9px] border border-[#dfdcd5] space-y-1">
-                <span className="text-[10px] font-mono uppercase text-[#595855]">
-                  ACTIVE TIMEZONE
+              <div className="p-4 bg-[#f6f5f4] rounded-[8px] space-y-1 border border-black/5">
+                <span className="text-[10px] font-medium uppercase text-black/50">
+                  Active Selected Zone
                 </span>
-                <div className="text-lg font-mono font-bold text-black">
+                <div className="text-lg font-semibold text-black">
                   {preferences.timezone}
                 </div>
-                <div className="text-xs font-mono text-[#595855]">
-                  CURRENT LOCAL TIME: {getCurrentTimeInZone(preferences.timezone)}
+                <div className="text-xs text-black/60">
+                  Current Time: {getCurrentTimeInZone(preferences.timezone)}
                 </div>
               </div>
 
               <div className="space-y-3">
-                <label className="block text-xs font-mono uppercase text-[#595855]">
-                  SWITCH TIMEZONE
+                <label className="block text-xs font-medium text-black/60">
+                  Switch Timezone
                 </label>
                 <div className="relative">
-                  <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-[#595855]" />
+                  <Search className="w-3.5 h-3.5 absolute left-3.5 top-3 text-black/40" />
                   <input
                     type="text"
                     value={tzSearch}
                     onChange={(e) => setTzSearch(e.target.value)}
                     placeholder="Search timezone (e.g. London, Madrid, New York, Tokyo)..."
-                    className="w-full pl-9 pr-4 py-2 bg-white border border-[#dfdcd5] rounded-[9px] text-xs font-mono focus:outline-none focus:border-black"
+                    className="w-full pl-9 pr-4 py-2 bg-white border border-black/10 rounded-[8px] text-xs focus:outline-none focus:border-[#0075de]"
                   />
                 </div>
 
-                <div className="max-h-56 overflow-y-auto border border-[#dfdcd5] rounded-[9px] divide-y divide-[#dfdcd5] bg-white">
+                <div className="max-h-56 overflow-y-auto border border-black/10 rounded-[8px] divide-y divide-black/5 bg-white">
                   {filteredTimezones.map((tz) => {
                     const isSelected = preferences.timezone === tz.value;
                     return (
@@ -238,12 +238,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                         key={tz.value}
                         type="button"
                         onClick={() => updateTimezone(tz.value)}
-                        className={`w-full px-4 py-2.5 text-left text-xs font-mono flex items-center justify-between transition-colors ${
-                          isSelected ? 'bg-black text-white font-semibold' : 'hover:bg-[#e7e5e4] text-black'
+                        className={`w-full px-4 py-2 text-left text-xs flex items-center justify-between transition-colors ${
+                          isSelected ? 'bg-[#0075de] text-white font-medium' : 'hover:bg-[#f6f5f4] text-black'
                         }`}
                       >
                         <span>{tz.label}</span>
-                        <span className={`text-[11px] ${isSelected ? 'text-white' : 'text-[#595855]'}`}>
+                        <span className={`text-[11px] ${isSelected ? 'text-white/80' : 'text-black/40'}`}>
                           {tz.offset}
                         </span>
                       </button>
@@ -257,38 +257,38 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           {/* TAB 3: NOTIFICATIONS */}
           {activeTab === 'notifications' && (
             <div className="space-y-6">
-              <div className="p-4 bg-white rounded-[9px] border border-[#dfdcd5] space-y-3">
+              <div className="p-4 bg-[#f6f5f4] rounded-[8px] space-y-3 border border-black/5">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-mono uppercase text-[#595855] block">
-                      PUSH SERVICE
+                    <span className="text-xs font-medium text-black/60 block">
+                      Push Service
                     </span>
-                    <span className="text-sm font-mono font-semibold text-black">
-                      STATUS: {getNotificationPermission().toUpperCase()}
+                    <span className="text-sm font-semibold text-black">
+                      Permission: {getNotificationPermission()}
                     </span>
                   </div>
                   <button
                     onClick={async () => {
                       await requestNotificationPermission();
                     }}
-                    className="px-3 py-1 bg-[#e7e5e4] text-black border border-black rounded-[28.8px] text-xs font-mono uppercase hover:bg-black hover:text-white"
+                    className="notion-btn-outline text-xs"
                   >
-                    REQUEST PERMISSION
+                    Request Permission
                   </button>
                 </div>
 
-                <div className="pt-2 border-t border-[#dfdcd5]">
+                <div className="pt-2 border-t border-black/8">
                   <button
                     id="test-notification-btn"
                     onClick={handleSendTestPush}
-                    className="w-full structured-pill-btn py-2 text-xs flex items-center justify-center space-x-2"
+                    className="w-full notion-btn-primary py-2 text-xs flex items-center justify-center space-x-2"
                   >
                     <Send className="w-3.5 h-3.5" />
-                    <span>SEND INSTANT TEST PUSH NOTIFICATION</span>
+                    <span>Send Instant Test Notification</span>
                   </button>
 
                   {testStatus && (
-                    <div className="mt-2 p-2 bg-[#e7e5e4] rounded-[9px] text-xs font-mono text-black text-center border border-[#dfdcd5]">
+                    <div className="mt-2 p-2 bg-white rounded-[6px] text-xs font-medium text-black text-center border border-black/10">
                       {testStatus}
                     </div>
                   )}
@@ -297,39 +297,39 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
 
               {/* Toggles */}
               <div className="space-y-3">
-                <label className="flex items-center space-x-3 p-3.5 bg-white rounded-[9px] cursor-pointer hover:bg-[#eae8e7] border border-[#dfdcd5] transition-colors">
+                <label className="flex items-center space-x-3 p-3.5 bg-[#f6f5f4] rounded-[8px] cursor-pointer hover:bg-black/5 transition-colors">
                   <input
                     type="checkbox"
                     checked={preferences.notification10Min}
                     onChange={(e) =>
                       updateNotificationPreferences({ notification10Min: e.target.checked })
                     }
-                    className="w-4 h-4 accent-black"
+                    className="w-4 h-4 accent-[#0075de]"
                   />
                   <div>
-                    <span className="text-sm font-mono font-medium text-black block">
-                      10-MINUTE KICKOFF ALERT
+                    <span className="text-sm font-medium text-black block">
+                      10-Minute Kickoff Alert
                     </span>
-                    <span className="text-xs font-mono text-[#595855] block">
+                    <span className="text-xs text-black/60 block">
                       Sends notification 10 minutes prior to match start
                     </span>
                   </div>
                 </label>
 
-                <label className="flex items-center space-x-3 p-3.5 bg-white rounded-[9px] cursor-pointer hover:bg-[#eae8e7] border border-[#dfdcd5] transition-colors">
+                <label className="flex items-center space-x-3 p-3.5 bg-[#f6f5f4] rounded-[8px] cursor-pointer hover:bg-black/5 transition-colors">
                   <input
                     type="checkbox"
                     checked={preferences.notificationKickoff}
                     onChange={(e) =>
                       updateNotificationPreferences({ notificationKickoff: e.target.checked })
                     }
-                    className="w-4 h-4 accent-black"
+                    className="w-4 h-4 accent-[#0075de]"
                   />
                   <div>
-                    <span className="text-sm font-mono font-medium text-black block">
-                      KICKOFF WHISTLE ALERT
+                    <span className="text-sm font-medium text-black block">
+                      Kickoff Whistle Alert
                     </span>
-                    <span className="text-xs font-mono text-[#595855] block">
+                    <span className="text-xs text-black/60 block">
                       Sends notification at match start
                     </span>
                   </div>
@@ -340,12 +340,12 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-[#dfdcd5] bg-[#dfdcd5]/30 flex justify-end">
+        <div className="p-4 border-t border-black/8 bg-[#f6f5f4] flex justify-end">
           <button
             onClick={onClose}
-            className="structured-pill-btn px-6 py-2 text-xs"
+            className="notion-btn-primary px-5 py-1.5 text-xs font-medium"
           >
-            CONFIRM & CLOSE
+            Done
           </button>
         </div>
       </div>

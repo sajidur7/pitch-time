@@ -9,10 +9,9 @@ import { requestNotificationPermission } from '@/lib/push-notifications';
 
 interface MatchRowProps {
   match: Match;
-  index: string;
 }
 
-export function MatchRow({ match, index }: MatchRowProps) {
+export function MatchRow({ match }: MatchRowProps) {
   const { preferences, toggleMatchAlert } = useUser();
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -24,7 +23,7 @@ export function MatchRow({ match, index }: MatchRowProps) {
     e.stopPropagation();
     const newState = toggleMatchAlert(match.id);
     const msg = newState
-      ? `10-min alert enabled for ${match.homeTeam.shortName} vs ${match.awayTeam.shortName}`
+      ? `10-min alert set for ${match.homeTeam.shortName} vs ${match.awayTeam.shortName}`
       : `Alert turned off for ${match.homeTeam.shortName} vs ${match.awayTeam.shortName}`;
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
@@ -40,59 +39,56 @@ export function MatchRow({ match, index }: MatchRowProps) {
     <div className="relative group">
       {/* Toast Feedback */}
       {toastMessage && (
-        <div className="absolute top-2 right-4 z-20 bg-black text-white px-3.5 py-1.5 text-xs font-mono rounded-[28.8px] flex items-center space-x-2 animate-in fade-in slide-in-from-top-1">
-          <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+        <div className="absolute top-2 right-4 z-20 bg-black/90 text-white px-3.5 py-1.5 text-xs font-medium rounded-[8px] flex items-center space-x-2 animate-in fade-in slide-in-from-top-1">
+          <CheckCircle2 className="w-3.5 h-3.5 text-[#e6f3fe]" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Structured Bone Card (9px radius, flat on Putty canvas, hairline vellum border) */}
+      {/* Notion White Card (12px radius, pure white, 1px hairline border, no shadows) */}
       <div
         onClick={() => setIsExpanded(!isExpanded)}
-        className="bg-[#e7e5e4] hover:bg-[#eae8e7] border border-[#dfdcd5] rounded-[9px] p-4 sm:p-5 cursor-pointer mb-2.5 transition-colors"
+        className="notion-card p-4 sm:p-5 cursor-pointer mb-2.5 bg-white"
       >
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          {/* Kickoff Index & Local Time */}
-          <div className="flex items-center space-x-3.5 min-w-[190px]">
-            <span className="text-[11px] font-mono text-[#595855] w-6">
-              {index}
-            </span>
+          {/* Kickoff Date & Time */}
+          <div className="flex items-center space-x-3 min-w-[170px]">
             <div className="space-y-0.5">
-              <div className="text-[11px] font-mono uppercase tracking-wider text-[#595855]">
+              <div className="text-[11px] font-medium text-black/60 uppercase tracking-wide">
                 {kickoff.dateStr}
               </div>
-              <div className="text-xl sm:text-2xl font-normal font-serif-davinci text-black tracking-tight">
+              <div className="text-xl sm:text-2xl font-semibold tracking-tight text-black">
                 {kickoff.timeStr}
               </div>
             </div>
             {kickoff.isToday && (
-              <span className="px-2 py-0.5 text-[9px] font-mono uppercase bg-black text-white rounded-[2px]">
-                TODAY
+              <span className="px-2.5 py-0.5 text-[10px] font-semibold rounded-full bg-[#ffb110]/20 text-[#000000]">
+                Today
               </span>
             )}
           </div>
 
-          {/* Teams Matchup (Pure Typography - No images) */}
+          {/* Teams Matchup (Typographic Monograms - NO image dependencies) */}
           <div className="flex-1 flex items-center justify-start md:justify-center">
-            <div className="flex items-center space-x-3 sm:space-x-5 w-full max-w-md justify-between sm:justify-center">
+            <div className="flex items-center space-x-3 sm:space-x-5 w-full max-w-lg justify-between sm:justify-center">
               {/* Home Team */}
               <div className="flex items-center space-x-2 text-right flex-1 justify-end min-w-0">
                 <span className="text-sm sm:text-base font-medium tracking-tight text-black truncate">
                   {match.homeTeam.name}
                 </span>
-                <span className="px-2 py-0.5 text-[10px] font-mono font-semibold rounded-[2px] bg-[#dfdcd5] text-black shrink-0">
+                <span className="px-2 py-0.5 text-xs font-bold rounded-[6px] bg-black/5 text-black/80 shrink-0">
                   {match.homeTeam.code}
                 </span>
               </div>
 
               {/* VS Divider */}
-              <span className="text-xs font-mono text-[#595855] uppercase tracking-widest shrink-0">
+              <span className="text-xs font-normal text-black/40 shrink-0">
                 vs
               </span>
 
               {/* Away Team */}
               <div className="flex items-center space-x-2 text-left flex-1 justify-start min-w-0">
-                <span className="px-2 py-0.5 text-[10px] font-mono font-semibold rounded-[2px] bg-[#dfdcd5] text-black shrink-0">
+                <span className="px-2 py-0.5 text-xs font-bold rounded-[6px] bg-black/5 text-black/80 shrink-0">
                   {match.awayTeam.code}
                 </span>
                 <span className="text-sm sm:text-base font-medium tracking-tight text-black truncate">
@@ -102,55 +98,55 @@ export function MatchRow({ match, index }: MatchRowProps) {
             </div>
           </div>
 
-          {/* Right: Competition, Countdown, Action Capsule Button */}
+          {/* Right: Competition, Countdown, Action Button */}
           <div className="flex items-center justify-between md:justify-end space-x-3 min-w-[220px]">
             {/* Competition Badge */}
-            <span className="px-2.5 py-1 text-[10px] font-mono uppercase tracking-wider rounded-[2px] border border-[#dfdcd5] text-black shrink-0">
+            <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-black/5 text-black/70 shrink-0">
               {match.competition}
             </span>
 
             {/* Countdown Badge */}
             <span
-              className={`px-3 py-1 text-xs font-mono rounded-[28.8px] transition-colors ${
+              className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
                 kickoff.relativeBadge === 'LIVE'
-                  ? 'bg-black text-white font-bold'
+                  ? 'bg-[#ffb110] text-black font-semibold'
                   : kickoff.isImminent
-                  ? 'bg-[#dfdcd5] text-black font-semibold'
-                  : 'text-[#595855]'
+                  ? 'bg-[#e6f3fe] text-[#0075de] font-semibold'
+                  : 'text-black/60 bg-black/5'
               }`}
             >
               {kickoff.relativeBadge}
             </span>
 
-            {/* Bell Toggle Capsule */}
+            {/* Notion 8px Alert Toggle Button */}
             <button
               onClick={handleToggleBell}
-              className={`px-3 py-1.5 rounded-[28.8px] transition-colors flex items-center space-x-1.5 text-xs font-mono uppercase ${
+              className={`px-3 py-1.5 rounded-[8px] text-xs font-medium flex items-center space-x-1.5 transition-colors ${
                 isAlertActive
-                  ? 'bg-black text-white'
-                  : 'border border-[#dfdcd5] text-[#595855] hover:text-black hover:border-black'
+                  ? 'bg-[#0075de] text-white'
+                  : 'bg-black/5 hover:bg-black/10 text-black/70'
               }`}
               title={isAlertActive ? 'Notification active' : 'Set 10-minute alert'}
             >
               <Bell className={`w-3.5 h-3.5 ${isAlertActive ? 'fill-white' : ''}`} />
-              <span className="text-[10px]">{isAlertActive ? 'ACTIVE' : 'ALERT'}</span>
+              <span className="text-[11px]">{isAlertActive ? 'On' : 'Alert'}</span>
             </button>
           </div>
         </div>
 
-        {/* Expandable Match Details (Museum Wall Label style) */}
+        {/* Expandable Match Details */}
         {isExpanded && (
-          <div className="mt-4 pt-3 border-t border-[#dfdcd5] text-xs font-mono text-[#595855] flex flex-wrap items-center justify-between gap-3 animate-in fade-in-50">
+          <div className="mt-4 pt-3 border-t border-black/8 text-xs text-black/70 flex flex-wrap items-center justify-between gap-3 animate-in fade-in-50">
             <div className="flex items-center space-x-2">
-              <MapPin className="w-3.5 h-3.5 text-black" />
-              <span>VENUE: <strong className="text-black font-semibold">{match.venue}</strong></span>
+              <MapPin className="w-3.5 h-3.5 text-[#0075de]" />
+              <span>Venue: <strong className="text-black">{match.venue}</strong></span>
             </div>
             <div className="flex items-center space-x-2">
-              <Trophy className="w-3.5 h-3.5 text-black" />
-              <span>COMPETITION: <strong className="text-black font-semibold">{match.matchday}</strong></span>
+              <Trophy className="w-3.5 h-3.5 text-[#0075de]" />
+              <span>Phase: <strong className="text-black">{match.matchday}</strong></span>
             </div>
-            <div className="text-black font-medium">
-              {isAlertActive ? 'PUSH NOTIFICATION SCHEDULED (10M + KICKOFF)' : 'CLICK ALERT BUTTON TO SUBSCRIBE'}
+            <div className="text-[#0075de] font-medium">
+              {isAlertActive ? '10-minute push alert active' : 'Click alert to enable 10-minute kickoff ping'}
             </div>
           </div>
         )}
