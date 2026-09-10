@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useUser } from '@/context/UserContext';
 import { Match, CompetitionCode } from '@/lib/types';
 import { getMockMatches } from '@/lib/matches-data';
 import { MatchRow } from './MatchRow';
-import { Search, Bell, Plus, Clock, Sparkles } from 'lucide-react';
+import { Search, Bell, Plus, Clock } from 'lucide-react';
 import { TEAMS } from '@/lib/teams-data';
 import { requestNotificationPermission, getNotificationPermission } from '@/lib/push-notifications';
 import { PitchTimeLogo } from './PitchTimeLogo';
@@ -21,17 +21,65 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [notificationEnabled, setNotificationEnabled] = useState(false);
 
-  const allMatches = useMemo(() => getMockMatches(), []);
+  // Live match state from official API
+  const [allMatches, setAllMatches] = useState<Match[]>(() => getMockMatches());
+  const [isLoadingMatches, setIsLoadingMatches] = useState(true);
+
+  // Fetch real matches live from /api/matches (ESPN Scoreboard for UCL, EPL, and La Liga)
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadLiveMatches() {
+      try {
+        const res = await fetch('/api/matches');
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && data.matches && data.matches.length > 0) {
+            setAllMatches(data.matches);
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load live match feed:', err);
+      } finally {
+        if (isMounted) setIsLoadingMatches(false);
+      }
+    }
+
+    loadLiveMatches();
+
+    // Revalidate every 2 minutes
+    const interval = setInterval(loadLiveMatches, 120000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   // Filter matches
   const filteredMatches = useMemo(() => {
     let list = allMatches;
 
     if (activeTab === 'my-teams') {
-      const favs = preferences.favoriteTeamIds || [];
-      list = list.filter(
-        (m) => favs.includes(m.homeTeam.id) || favs.includes(m.awayTeam.id)
-      );
+      const favs = (preferences.favoriteTeamIds || []).map((id) => id.toLowerCase());
+      list = list.filter((m) => {
+        const homeCode = m.homeTeam.code?.toLowerCase() || '';
+        const homeId = m.homeTeam.id?.toLowerCase() || '';
+        const homeName = m.homeTeam.name?.toLowerCase() || '';
+        const awayCode = m.awayTeam.code?.toLowerCase() || '';
+        const awayId = m.awayTeam.id?.toLowerCase() || '';
+        const awayName = m.awayTeam.name?.toLowerCase() || '';
+
+        return favs.some((fav) =>
+          homeCode === fav ||
+          homeId.includes(fav) ||
+          homeName.includes(fav) ||
+          fav.includes(homeCode) ||
+          awayCode === fav ||
+          awayId.includes(fav) ||
+          awayName.includes(fav) ||
+          fav.includes(awayCode)
+        );
+      });
     }
 
     if (selectedCompetition !== 'ALL') {
@@ -69,7 +117,7 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
 
   return (
     <div className="max-w-[1240px] mx-auto px-4 sm:px-8 py-10 sm:py-16 space-y-10">
-      {/* Notion Hero: Centered Stack with Highlight Pill */}
+      {/* Notion Hero: Centered Stack with Match Notebook Pill */}
       <div className="space-y-6 text-center max-w-2xl mx-auto">
         <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-normal text-black/70 bg-black/5">
           <span>⚽</span>
@@ -85,7 +133,7 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
         </div>
 
         <p className="text-sm sm:text-base text-[#615d59] leading-relaxed max-w-lg mx-auto">
-          Upcoming club matches across Champions League, Premier League, and La Liga. Auto-converted to local time with instant 10-minute browser alerts.
+          Real live club matches across Champions League, Premier League, and La Liga. Auto-converted to local time with instant 10-minute browser alerts.
         </p>
 
         {/* Notion Two-Button CTA Row */}
@@ -196,6 +244,15 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
         </div>
       </div>
 
+      {/* Real Live Match Feed Counter & Timezone */}
+      <div className="flex items-center justify-between text-xs text-black/50 px-1 font-medium">
+        <span>
+          Showing {filteredMatches.length} official matches across 3 leagues
+          {isLoadingMatches ? ' (updating live data...)' : ''}
+        </span>
+        <span>Local Timezone: {preferences.timezone}</span>
+      </div>
+
       {/* Match Cards List */}
       <div className="space-y-2.5">
         {filteredMatches.length > 0 ? (
@@ -222,11 +279,10 @@ export function DashboardView({ onOpenSettings }: DashboardViewProps) {
         )}
       </div>
 
-      {/* Notion Minimal Footer */}
+      {/* Notion Minimal Footer (Clean without extra tracker label) */}
       <div className="border-t border-black/8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-black/50">
-        <div className="flex items-center space-x-2">
+        <div>
           <PitchTimeLogo size="sm" />
-          <span>• club football match tracker</span>
         </div>
         <div>
           UEFA Champions League • Premier League • La Liga
